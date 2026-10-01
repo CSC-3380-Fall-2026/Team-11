@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1015857607546",
+    "project_id": "melio-project",
+    "storage_bucket": "melio-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015857607546:android:7e18ee27737d40b9459cc3",
+        "android_client_info": {
+          "package_name": "com.example.melio_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC94WSiCFRBTb52EFgybVxZTGIscucGtGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
