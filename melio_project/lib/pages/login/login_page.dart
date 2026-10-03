@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:melio_project/pages/login/components/log_in_botton.dart";
 import "components/create_account_button.dart";
+import '../create_account/create_account_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -16,35 +17,37 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.33,
-              ),
-            
-              Text('Get started',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.inter(
-                fontSize: 30,
-                fontWeight: FontWeight.w800,
-                color: Colors.black,
-              ),
-            ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.33),
 
-              const SizedBox(height: 10),  
+              Text(
+                'Get started',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.inter(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black,
+                ),
+              ),
+
+              const SizedBox(height: 10),
 
               CreateAccountButton(
                 text: 'Create An Account',
-               onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateAccountPage(),
+                    ),
+                  );
+                },
               ),
 
               const SizedBox(height: 12),
 
-              LogInBotton(
-                text: 'Log In',
-                onPressed: () {},
-              ),
+              LogInBotton(text: 'Log In', onPressed: () {}),
 
-              const Spacer(flex: 5), 
+              const Spacer(flex: 5),
             ],
           ),
         ),
