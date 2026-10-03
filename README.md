@@ -2,7 +2,7 @@
 # Members
 Project Manager: Amaya ([GitHub Name])\
 Communications Lead: Katlin Ramirez (katlin-ramirez)\
-Git Master: Johnae ([GitHub Name])\
+Git Master: Johnae Avery ([HinaryCode])\
 Design Lead: Lydia ([GitHub Name])\
 Quality Assurance Tester: Lillian ([GitHub Name])
 
