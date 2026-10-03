@@ -41,26 +41,26 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: '${process.env.FLUTTERFIRE_WEB_API_KEY}',
-    appId: '1:1015857607546:web:37e8f2af1fc7229f459cc3',
+    apiKey: const String.fromEnvironment('FLUTTERFIRE_WEB_API_KEY'),
+    appId: const String.fromEnvironment('FLUTTERFIRE_WEB_APP_ID'),
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
-    authDomain: 'melio-project.firebaseapp.com',
+    authDomain: const String.fromEnvironment('FLUTTERFIRE_WEB_AUTHORS_DOMAIN'),
     storageBucket: 'melio-project.firebasestorage.app',
     measurementId: 'G-93K52Q6FFV',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: '${process.env.FLUTTERFIRE_ANDROID_API_KEY}',
-    appId: '1:1015857607546:android:7e18ee27737d40b9459cc3',
+    apiKey: const String.fromEnvironment('FLUTTERFIRE_ANDROID_API_KEY'),
+    appId: const String.fromEnvironment('FLUTTERFIRE_ANDROID_APP_ID'),
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
     storageBucket: 'melio-project.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: '${process.env.FLUTTERFIRE_IOS_API_KEY}',
-    appId: '1:1015857607546:ios:d1e8c47e51a4c80a459cc3',
+    apiKey: const String.fromEnvironment('FLUTTERFIRE_IOS_API_KEY'),
+    appId: const String.fromEnvironment('FLUTTERFIRE_IOS_APP_ID'),
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
     storageBucket: 'melio-project.firebasestorage.app',
@@ -68,8 +68,8 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: '${process.env.FLUTTERFIRE_MACOS_API_KEY}',
-    appId: '1:1015857607546:ios:d1e8c47e51a4c80a459cc3',
+    apiKey: const String.fromEnvironment('FLUTTERFIRE_MACOS_API_KEY'),
+    appId: const String.fromEnvironment('FLUTTERFIRE_MACOS_APP_ID'),
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
     storageBucket: 'melio-project.firebasestorage.app',
@@ -77,11 +77,11 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: '${process.env.FLUTTERFIRE_WINDOWS_API_KEY}',
-    appId: '1:1015857607546:web:bcd4c91ff6d73a9d459cc3',
+    apiKey: const String.fromEnvironment('FLUTTERFIRE_WINDOWS_API_KEY'),
+    appId: const String.fromEnvironment('FLUTTERFIRE_WINDOWS_APP_ID'),
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
-    authDomain: 'melio-project.firebaseapp.com',
+    authDomain: const String.fromEnvironment('FLUTTERFIRE_WINDOWS_AUTHORS_DOMAIN'),
     storageBucket: 'melio-project.firebasestorage.app',
     measurementId: 'G-1254D19QJY',
   );
