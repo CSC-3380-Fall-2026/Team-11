@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
+import "package:melio_project/pages/login/components/log_in_botton.dart";
 import "components/create_account_button.dart";
 
 class LoginPage extends StatelessWidget {
@@ -15,8 +16,11 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Spacer(flex: 3),
- 
+              
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.33,
+              ),
+            
               Text('Get started',
               textAlign: TextAlign.center,
               style: GoogleFonts.inter(
@@ -33,9 +37,14 @@ class LoginPage extends StatelessWidget {
                onPressed: () {},
               ),
 
-              const Spacer(flex: 3),
-              const SizedBox(height: 2),   
+              const SizedBox(height: 12),
 
+              LogInBotton(
+                text: 'Log In',
+                onPressed: () {},
+              ),
+
+              const Spacer(flex: 5), 
             ],
           ),
         ),
