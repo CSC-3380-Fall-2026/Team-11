@@ -41,7 +41,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDyAOwELuJCfYy1RGCXoJ3xJWpHa335eNs',
+    apiKey: '${process.env.FLUTTERFIRE_WEB_API_KEY}',
     appId: '1:1015857607546:web:37e8f2af1fc7229f459cc3',
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC94WSiCFRBTb52EFgybVxZTGIscucGtGk',
+    apiKey: '${process.env.FLUTTERFIRE_ANDROID_API_KEY}',
     appId: '1:1015857607546:android:7e18ee27737d40b9459cc3',
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
@@ -59,7 +59,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDaDYIFCw1dL1fKo7PHfEgKak9e_V6I-Ek',
+    apiKey: '${process.env.FLUTTERFIRE_IOS_API_KEY}',
     appId: '1:1015857607546:ios:d1e8c47e51a4c80a459cc3',
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
@@ -68,7 +68,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDaDYIFCw1dL1fKo7PHfEgKak9e_V6I-Ek',
+    apiKey: '${process.env.FLUTTERFIRE_MACOS_API_KEY}',
     appId: '1:1015857607546:ios:d1e8c47e51a4c80a459cc3',
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
@@ -77,7 +77,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDyAOwELuJCfYy1RGCXoJ3xJWpHa335eNs',
+    apiKey: '${process.env.FLUTTERFIRE_WINDOWS_API_KEY}',
     appId: '1:1015857607546:web:bcd4c91ff6d73a9d459cc3',
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
