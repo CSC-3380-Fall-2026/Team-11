@@ -1,10 +1,10 @@
-# [Name of the Project] : [Team Number]
+# Melio Project : 11
 # Members
-Project Manager: [Name] ([GitHub Name])\
-Communications Lead: [Name] ([GitHub Name])\
-Git Master: [Name] ([GitHub Name])\
-Design Lead: [Name] ([GitHub Name])\
-Quality Assurance Tester: [Name] ([GitHub Name])
+Project Manager: Amaya ([GitHub Name])\
+Communications Lead: Katlin Ramirez (katlin-ramirez)\
+Git Master: Johnae ([GitHub Name])\
+Design Lead: Lydia ([GitHub Name])\
+Quality Assurance Tester: Lillian ([GitHub Name])
 
 # About Our Software
 
