@@ -1,6 +1,6 @@
 # Melio Project : 11
 # Members
-Project Manager: Amaya ([GitHub Name])\
+Project Manager: Amaya ([amayar7])\
 Communications Lead: Katlin Ramirez (katlin-ramirez)\
 Git Master: Johnae Avery ([HinaryCode])\
 Design Lead: Lydia ([GitHub Name])\
