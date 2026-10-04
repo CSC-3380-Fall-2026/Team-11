@@ -2,10 +2,14 @@ import "components/password_textbox.dart";
 import "components/username_textbox.dart";
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
+import "package:firebase_auth/firebase_auth.dart";
+import '../services/account_authentication.dart';
 
 class CreateAccountPage extends StatelessWidget {
+
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
 
   CreateAccountPage({super.key});
 
@@ -42,12 +46,31 @@ class CreateAccountPage extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // Handle account creation logic here
                 String username = usernameController.text;
                 String password = passwordController.text;
-                // You can add validation and API calls here
+
                 print("Username: $username, Password: $password");
+                try {
+                  UserCredential userCredential = 
+                  await _authService.createUserWithEmailAndPassword
+                  (username, password);
+                
+                  if (context.mounted && userCredential.user != null){
+                    Navigator.pushReplacementNamed(context, '/home');
+                }
+
+                } on FirebaseAuthException catch (e) {
+
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e.message ?? "Account creation failed"),
+                      )
+                    );
+                  }
+                }
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),
