@@ -4,9 +4,42 @@ import "components/log_in_botton.dart";
 import "components/create_account_button.dart";
 import '../create_account/create_account_page.dart';
 import "components/social_login_row.dart";
+import "package:firebase_auth/firebase_auth.dart";
+import '../services/account_authentication.dart';
+
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key}); //removed const
+
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+
+  void _Login(BuildContext context) async {
+    String username = usernameController.text.trim();
+    String password = passwordController.text.trim();
+    
+    if (username.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please enter both username and password')),
+        );
+      return;
+    }
+
+    try {
+      UserCredential userCredential = await _authService.loginWithEmailAndPassword(username, password);
+
+      if (context.mounted && userCredential.user != null) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login failed: ${e.message}')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +79,7 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 12),
 
-              LogInBotton(text: 'Log In', onPressed: () {}),
+              LogInBotton(text: 'Log In', onPressed: () => _Login(context)),
 
               const SizedBox(height: 24),
 
