@@ -3,7 +3,7 @@
 Project Manager: Amaya ([amayar7])\
 Communications Lead: Katlin Ramirez (katlin-ramirez)\
 Git Master: Johnae Avery ([HinaryCode])\
-Design Lead: Lydia ([GitHub Name])\
+Design Lead: Lydia ([lydiarw-1])\
 Quality Assurance Tester: Lillian ([GitHub Name])
 
 # About Our Software
