@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:melio_project/pages/login/login_page.dart';
-import 'package:melio_project/pages/home/home.dart';
+import 'package:melio_project/pages/home/home_page.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
