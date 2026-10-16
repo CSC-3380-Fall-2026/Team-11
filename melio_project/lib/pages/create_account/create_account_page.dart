@@ -4,9 +4,9 @@ import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import '../services/account_authentication.dart';
+import '../home/home.dart';
 
 class CreateAccountPage extends StatelessWidget {
-
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final AuthService _authService = AuthService();
@@ -53,21 +53,18 @@ class CreateAccountPage extends StatelessWidget {
 
                 print("Username: $username, Password: $password");
                 try {
-                  UserCredential userCredential = 
-                  await _authService.createUserWithEmailAndPassword
-                  (username, password);
-                
-                  if (context.mounted && userCredential.user != null){
+                  UserCredential userCredential = await _authService
+                      .createUserWithEmailAndPassword(username, password);
+
+                  if (context.mounted && userCredential.user != null) {
                     Navigator.pushReplacementNamed(context, '/home');
-                }
-
+                  }
                 } on FirebaseAuthException catch (e) {
-
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(e.message ?? "Account creation failed"),
-                      )
+                      ),
                     );
                   }
                 }
@@ -86,6 +83,17 @@ class CreateAccountPage extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
+            ),
+
+            // Temporary button to navigate to HomePage for testing purposes
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+              },
+              child: Text("Go to Home"),
             ),
           ],
         ),
