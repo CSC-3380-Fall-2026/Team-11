@@ -149,21 +149,10 @@ class LoginPage extends StatelessWidget {
 
                     const SizedBox(height: 16),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SocialLoginRow(
-                          assetPath: 'assets/images/google_logo.svg',
-                          onTap: () => _loginWithGoogle(context),
-                        ),
-
-                        const SizedBox(width: 16),
-
-                        SocialLoginRow(
-                          assetPath: 'assets/images/apple_logo.svg',
-                          onTap: () {},
-                        ),
-                      ],
+                    SocialLoginRow(
+                      assetPath: 'assets/images/google_logo.svg',
+                      signInText: 'Sign in with Google',
+                      onPressed: () => _loginWithGoogle(context),
                     ),
 
                     const SizedBox(height: 40),
