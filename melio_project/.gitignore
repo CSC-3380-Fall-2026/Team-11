@@ -56,3 +56,5 @@ build/
 macos/Pods/
 macos/Podfile.lock
 macos/Runner.xcworkspace/
+# Widget Preview related
+.widget_preview/
