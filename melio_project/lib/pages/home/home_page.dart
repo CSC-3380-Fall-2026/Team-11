@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
+import '../add_data/add_data_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -38,14 +39,18 @@ class HomePage extends StatelessWidget {
             end: Alignment.centerRight,
           ),
         ),
+
         child: Material(
           color: Colors.transparent,
           child: InkWell(
             customBorder: const CircleBorder(),
-            onTap: () {
-              // switch to "log workout/nutrition data" page
-            },
             child: const Icon(Icons.add, size: 40, color: Colors.black),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddDataPage()),
+              );
+            },
           ),
         ),
       ),
