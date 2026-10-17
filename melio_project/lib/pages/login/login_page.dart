@@ -7,6 +7,7 @@ import '../create_account/create_account_page.dart';
 import "components/social_login_row.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import '../services/account_authentication.dart';
+import '../services/google_authentication.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key}); //removed const
@@ -14,6 +15,7 @@ class LoginPage extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final AuthService _authService = AuthService();
+  final GoogleAuthentication _googleAuth = GoogleAuthentication();
 
   void _Login(BuildContext context) async {
     String username = usernameController.text.trim();
@@ -41,6 +43,34 @@ class LoginPage extends StatelessWidget {
           context,
         ).showSnackBar(SnackBar(content: Text('Login failed: ${e.message}')));
       }
+    }
+  }
+
+  Future<void> _loginWithGoogle(BuildContext context) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+
+    try {
+      final User? user = await _googleAuth.signInWithGoogle();
+
+      if (!context.mounted) return;
+
+      if (user == null) {
+        messenger.showSnackBar(
+          const SnackBar(content: Text('Google sign-in was cancelled')),
+        );
+        return;
+      }
+
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Connected successfully')),
+      );
+      navigator.pushReplacementNamed('/home');
+    } catch (e) {
+      if (!context.mounted) return;
+      messenger.showSnackBar(
+        SnackBar(content: Text('Google login failed: $e')),
+      );
     }
   }
 
@@ -124,7 +154,7 @@ class LoginPage extends StatelessWidget {
                       children: [
                         SocialLoginRow(
                           assetPath: 'assets/images/google_logo.svg',
-                          onTap: () {},
+                          onTap: () => _loginWithGoogle(context),
                         ),
 
                         const SizedBox(width: 16),
