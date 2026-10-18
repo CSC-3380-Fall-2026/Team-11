@@ -41,18 +41,18 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: const String.fromEnvironment('FLUTTERFIRE_WEB_API_KEY'),
-    appId: const String.fromEnvironment('FLUTTERFIRE_WEB_APP_ID'),
+    apiKey: 'AIzaSyDyAOwELuJCfYy1RGCXoJ3xJWpHa335eNs',
+    appId: '1:1015857607546:web:37e8f2af1fc7229f459cc3',
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
-    authDomain: const String.fromEnvironment('FLUTTERFIRE_WEB_AUTHORS_DOMAIN'),
+    authDomain: 'melio-project.firebaseapp.com',
     storageBucket: 'melio-project.firebasestorage.app',
     measurementId: 'G-93K52Q6FFV',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: const String.fromEnvironment('FLUTTERFIRE_ANDROID_API_KEY'),
-    appId: const String.fromEnvironment('FLUTTERFIRE_ANDROID_APP_ID'),
+    apiKey: 'AIzaSyC94WSiCFRBTb52EFgybVxZTGIscucGtGk',
+    appId: '1:1015857607546:android:7e18ee27737d40b9459cc3',
     messagingSenderId: '1015857607546',
     projectId: 'melio-project',
     storageBucket: 'melio-project.firebasestorage.app',

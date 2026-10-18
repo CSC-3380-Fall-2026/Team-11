@@ -44,3 +44,15 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Flutter & Dart build artifacts
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+
+# CocoaPods & Xcode temporary files
+macos/Pods/
+macos/Podfile.lock
+macos/Runner.xcworkspace/
