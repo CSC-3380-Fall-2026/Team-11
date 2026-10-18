@@ -1,0 +1,52 @@
+/**
+ * Creates a JSONL (line-delimited JSON) stringer as a Web Streams
+ * `TransformStream`. Each incoming object is serialized with `JSON.stringify()`
+ * and separated by a configurable separator (default: `'\n'`).
+ *
+ * Web-flavored entry — no Node-stream imports pulled in via this subpath.
+ *
+ * @deprecated Use stream-chain's JSONL stringer directly: `stream-chain/jsonl/stringerWebStream.js`
+ * (Web `TransformStream`) or `stream-chain/jsonl/stringerStream.js` (Node Transform). stream-json's
+ * JSONL is a thin re-export of stream-chain's and is slated for removal in a future major —
+ * stream-json is a JSON *token* library, whereas JSONL yields whole objects per line and belongs
+ * in stream-chain with the other substrate components.
+ *
+ * @param options - Stringer configuration.
+ * @returns A `TransformStream<T, string>`.
+ */
+declare function stringer<T = any>(options?: stringer.JsonlStringerOptions): TransformStream<T, string>;
+
+declare namespace stringer {
+  /** Options for the JSONL stringer (Web Streams flavor). */
+  export interface JsonlStringerOptions {
+    /** A `JSON.stringify()` replacer. */
+    replacer?: ((this: unknown, key: string, value: unknown) => unknown) | (string | number)[];
+    /** Line separator between JSON values. Default: `'\n'`. */
+    separator?: string;
+    /** String prepended before the first value. Default: `''`. */
+    prefix?: string;
+    /** String appended after the last value on flush. Default: `''`. */
+    suffix?: string;
+    /** `JSON.stringify()` space argument for pretty-printing. */
+    space?: string | number;
+    /** String to emit when the stream ends without any values. */
+    emptyValue?: string;
+    /** Queuing strategy applied to both sides if no side-specific strategy is given. */
+    strategy?: QueuingStrategy;
+    /** Optional `QueuingStrategy` for the writable side. Overrides `strategy`. */
+    writableStrategy?: QueuingStrategy<unknown>;
+    /** Optional `QueuingStrategy` for the readable side. Overrides `strategy`. */
+    readableStrategy?: QueuingStrategy<string>;
+  }
+
+  /** Creates a JSONL stringer as a Web Streams `TransformStream`. */
+  export function asWebStream<T = any>(options?: JsonlStringerOptions): TransformStream<T, string>;
+  /** Self-reference for backwards compat. */
+  export const stringer: typeof import('./stringer.js').default;
+}
+
+type JsonlStringerOptions = stringer.JsonlStringerOptions;
+
+export default stringer;
+export {stringer, stringer as jsonlStringer};
+export type {JsonlStringerOptions};

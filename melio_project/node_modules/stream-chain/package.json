@@ -1,0 +1,97 @@
+{
+  "name": "stream-chain",
+  "version": "4.2.6",
+  "description": "Chain functions, generators, Node streams, and Web streams into a pipeline with backpressure support.",
+  "type": "module",
+  "main": "./src/node/index.js",
+  "types": "./src/node/index.d.ts",
+  "exports": {
+    ".": "./src/node/index.js",
+    "./node": "./src/node/index.js",
+    "./web": "./src/web/index.js",
+    "./core": "./src/core/index.js",
+    "./node/jsonl": "./src/node/jsonl/index.js",
+    "./web/jsonl": "./src/web/jsonl/index.js",
+    "./*": "./src/*"
+  },
+  "scripts": {
+    "test": "tape6 --flags FO",
+    "test:bun": "tape6-bun --flags FO",
+    "test:deno": "tape6-deno --flags FO",
+    "test:proc": "tape6-proc --flags FO",
+    "test:proc:bun": "bun run `tape6-proc --self` --flags FO",
+    "test:proc:deno": "deno run -A `tape6-proc --self` --flags FO -r -A",
+    "test:seq": "tape6-seq --flags FO",
+    "test:seq:bun": "bun run `tape6-seq --self` --flags FO",
+    "test:seq:deno": "deno run -A `tape6-seq --self` --flags FO",
+    "test:browser": "tape6-puppeteer --server-url http://localhost:55555 --start-server --flags FO",
+    "browser:install": "npx puppeteer browsers install chrome",
+    "ts-check": "tsc --noEmit",
+    "js-check": "tsc --project tsconfig.check.json",
+    "ts-test": "tape6 --flags FO 'tests/**/test-*.*ts'",
+    "ts-test:bun": "tape6-bun --flags FO 'tests/**/test-*.*ts'",
+    "ts-test:deno": "tape6-deno --flags FO 'tests/**/test-*.*ts'",
+    "bench": "nano-bench",
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uhop/stream-chain.git"
+  },
+  "keywords": [
+    "stream",
+    "chain",
+    "pipeline",
+    "transform",
+    "backpressure",
+    "duplex",
+    "generator",
+    "async",
+    "object-mode",
+    "functional",
+    "jsonl",
+    "json-lines",
+    "ndjson",
+    "web-streams",
+    "esm"
+  ],
+  "author": "Eugene Lazutkin <eugene.lazutkin@gmail.com> (https://www.lazutkin.com/)",
+  "funding": "https://github.com/sponsors/uhop",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/uhop/stream-chain/issues"
+  },
+  "homepage": "https://github.com/uhop/stream-chain#readme",
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md",
+    "llms.txt",
+    "llms-full.txt"
+  ],
+  "tape6": {
+    "tests": [
+      "/tests/core/test-*.*js",
+      "/tests/web/test-*.*js"
+    ],
+    "cli": [
+      "/tests/node/test-*.*js"
+    ],
+    "importmap": {
+      "imports": {
+        "tape-six": "/node_modules/tape-six/index.js",
+        "tape-six/": "/node_modules/tape-six/src/"
+      }
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "nano-benchmark": "^1.2.0",
+    "prettier": "^3.9.9",
+    "tape-six": "^1.16.4",
+    "tape-six-proc": "^1.3.1",
+    "tape-six-puppeteer": "^1.2.2",
+    "typescript": "^7.0.2"
+  }
+}
