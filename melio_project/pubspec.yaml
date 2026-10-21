@@ -45,11 +45,9 @@ dependencies:
   firebase_auth: ^6.7.0
   google_sign_in: ^6.2.2
   cloud_firestore: ^6.10.0
-<<<<<<< HEAD
   flutter_dotenv: 6.0.1
-=======
+
   
->>>>>>> 29c3f17ef53fc9b1daf444818071647c6794e486
 
 dev_dependencies:
   flutter_test:
