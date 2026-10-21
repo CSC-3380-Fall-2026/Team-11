@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:melio_project/pages/login/login_page.dart';
+import 'package:melio_project/pages/home/home.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => LoginPage(),
-        '/home': (context) => const HomePage(),
+        '/home': (context) => HomePage(),
 
         // home: LoginPage(), // App start point is the LoginPage
       },
