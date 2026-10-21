@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
+import "package:melio_project/pages/chatbot/chatbot_page.dart";
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,8 +23,58 @@ class HomePage extends StatelessWidget {
         ),
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 150.0),
+      //wrapping body in a stack to float widgets over content
+     body: Stack(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 150.0),
+            child: Center(
+              child: Text("Home Content"),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: Container(
+              width: 55,
+              height: 55,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [Color(0xFFC5E7DB), Color(0xFFB5DEFF)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ChatbotPage(),
+                      ),
+                    );
+                  },
+                  child: const Icon(
+                    Icons.smart_toy_outlined,
+                    color: Colors.black87,
+                    size: 28,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
 
       floatingActionButton: Container(
