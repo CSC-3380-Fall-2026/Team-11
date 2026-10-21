@@ -12,7 +12,20 @@
           "package_name": "com.example.melio_project"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1015857607546-t0vpdmat0t2q62ql4edktfrf8scou23o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.melio_project",
+            "certificate_hash": "59ea651a01f3454988572921af89bdd7b9c20e82"
+          }
+        },
+        {
+          "client_id": "1015857607546-berangs0mt1sm96ir6176q4ade3s5jmc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC94WSiCFRBTb52EFgybVxZTGIscucGtGk"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015857607546-berangs0mt1sm96ir6176q4ade3s5jmc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1015857607546-26qvflka7ol8qfnipp2gn7ii52jphu92.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.melioProject"
+              }
+            }
+          ]
         }
       }
     }

@@ -6,6 +6,7 @@ import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import '../services/account_authentication.dart';
+import '../home/home.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -105,12 +106,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   }
 
                 } on FirebaseAuthException catch (e) {
-
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(e.message ?? "Account creation failed"),
-                      )
+                      ),
                     );
                   }
                 }
@@ -129,6 +129,17 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
+            ),
+
+            // Temporary button to navigate to HomePage for testing purposes
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+              },
+              child: Text("Go to Home"),
             ),
           ],
         ),

@@ -51,7 +51,13 @@ class MyApp extends StatelessWidget {
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
 
-      home: LoginPage(), // App start point is the LoginPage
+      initialRoute: '/',
+      routes: {
+        '/': (context) => LoginPage(),
+        '/home': (context) => const HomePage(),
+
+        // home: LoginPage(), // App start point is the LoginPage
+      },
     );
   }
 }
