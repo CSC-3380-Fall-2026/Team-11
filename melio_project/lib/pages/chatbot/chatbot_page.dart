@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
+//direct free sdk for generative ai
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChatMessage {
   final String text;
@@ -16,12 +20,41 @@ class ChatbotPage extends StatefulWidget {
 
 class _ChatbotPageState extends State<ChatbotPage> {
   final TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   final List<ChatMessage> _messages = [];
   bool _isLoading = false;
 
-  void _sendMessage() async {
+  late final GenerativeModel _model;
+  late final ChatSession _chatSession;
+
+  @override
+  void initState(){
+    super.initState();
+
+    final apiKey = dotenv.env['GOOGLE_GEN_AI_API_KEY']?? '';
+    
+    _model = GenerativeModel(
+      model : 'gemini-3.8-flash',
+      apiKey: apiKey,
+    );
+
+    _chatSession = _model.startChat();
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if (_scrollController.hasClients){
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent, 
+          duration: const Duration(seconds: 3), 
+          curve: Curves.easeOut);
+      }
+    });
+  }
+
+  Future<void> _sendMessage() async {
     final text = _textController.text.trim();
-    if (text.isEmpty) return;
+    if (text.isEmpty|| _isLoading) return;
 
     _textController.clear();
     setState(() {
@@ -29,20 +62,32 @@ class _ChatbotPageState extends State<ChatbotPage> {
       _isLoading = true;
     });
 
-    //replace this with your actual API call to the chatbot
-    await Future.delayed(const Duration(seconds: 2)); // Simulate a delay for the chatbot response
-    final aiResponse = "Hello! This is a simulated response from the chatbot. You said: '$text'"; // Simulated response
+    _scrollToBottom();
 
-    setState(() {
-      _messages.add(ChatMessage(text: aiResponse, isUser: false));
-      _isLoading = false;
-    });
+    try {
+      final response = await _chatSession.sendMessage(
+        Content.text(text)
+      );
+      final reply = response.text ?? "I didnt catch that. Could you please try again?";
+
+      setState ((){
+        _messages.add(ChatMessage(text: reply, isUser: false));
+      }); 
+    } catch (e) {
+      setState ((){
+        _messages.add(ChatMessage(text: "Error: $e", isUser: false));
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
-
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Chatbot')),
       body: Column(
         children: [
