@@ -1,0 +1,12 @@
+// @ts-self-types="./parser.d.ts"
+
+import factory, {jsonlParser} from 'stream-chain/web/jsonl/parser.js';
+
+const parser = options => factory(options);
+
+parser.parser = parser;
+parser.jsonlParser = jsonlParser;
+parser.asWebStream = factory.asWebStream;
+
+export default parser;
+export {parser, jsonlParser};

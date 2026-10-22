@@ -1,0 +1,100 @@
+import {Many, none} from 'stream-chain/defs.js';
+import parser from '../parser.js';
+
+/**
+ * Creates a configurable token-stream filter.
+ *
+ * `filterBase` is the foundation for all filters (`pick`, `replace`, `ignore`, `filter`).
+ * It tracks the JSON path stack and applies accept/reject actions based on a `filter` option.
+ *
+ * @param config - Internal configuration defining filter behavior (actions, transitions).
+ * @returns A factory that takes user-facing options and returns a flushable filter function.
+ */
+declare function filterBase(config?: filterBase.FilterBaseConfig): (options?: filterBase.FilterBaseOptions) => parser.TokenTransform;
+
+declare namespace filterBase {
+  /** User-facing options shared by all filters. */
+  export interface FilterBaseOptions {
+    /**
+     * Selects which subobjects to act on.
+     * - **string** — matches by path (using `pathSeparator`), prefix-aware.
+     * - **RegExp** — tested against the joined path string.
+     * - **function** — called with `(stack, chunk)`; returns truthy to match.
+     * - Default: `() => true`.
+     */
+    filter?: ((stack: (string | number | null)[], chunk: parser.Token) => boolean) | string | RegExp;
+    /** Act only on the first match, then pass everything through. Default: `false`. */
+    once?: boolean;
+    /** Separator used when joining the stack into a path string. Default: `'.'`. */
+    pathSeparator?: string;
+    /**
+     * Maximum JSON nesting depth to evaluate. When an incoming token is nested
+     * deeper than this, the filter throws a `RangeError` instead of matching its
+     * path. A guard for untrusted input with unbounded nesting. Default: `1024`.
+     * Pass `Infinity` to disable the limit.
+     */
+    maxDepth?: number;
+    /** Initial value for `streamKeys`. */
+    streamValues?: boolean;
+    /**
+     * Replay parent keys as `startKey`/`stringChunk`/`endKey` too. Default: mirrors
+     * upstream — on once streamed keys have been received. Replayed keys are always
+     * emitted as `keyValue`.
+     */
+    streamKeys?: boolean;
+    /**
+     * @deprecated No effect on filters: keys are tracked only when they arrive as
+     * `keyValue`, and replayed keys are always packed. In a `withParser()` options
+     * bag it still configures the parser. To be removed in the next major.
+     */
+    packKeys?: boolean;
+  }
+
+  /** Internal configuration that defines the behavior of a concrete filter. */
+  export interface FilterBaseConfig {
+    /** Action when the filter matches (e.g., `'accept'`, `'reject'`). */
+    specialAction?: string;
+    /** Action when the filter does not match (e.g., `'ignore'`, `'accept-token'`). */
+    defaultAction?: string;
+    /** Action when the path cannot be checked (no packed key yet). */
+    nonCheckableAction?: string;
+    /** Custom transition function called on each token to produce output. */
+    transition?: (
+      stack: (string | number | null)[],
+      chunk: parser.Token | null,
+      action: string,
+      options: FilterBaseOptions
+    ) => Many<parser.Token> | typeof none | void;
+  }
+
+  /**
+   * Creates a function that generates structural tokens (start/end object/array, key)
+   * to reconstruct the surrounding JSON envelope when filtering.
+   */
+  export function makeStackDiffer(
+    previousStack?: (string | number | null)[]
+  ): (stack: (string | number | null)[], chunk: parser.Token | null, options?: FilterBaseOptions) => Many<parser.Token>;
+  /** Self-reference for `filterBase.filterBase === filterBase`. */
+  export const filterBase: typeof import('./filter-base.js').default;
+}
+
+type FilterBaseOptions = filterBase.FilterBaseOptions;
+type FilterBaseConfig = filterBase.FilterBaseConfig;
+/**
+ * Top-level alias of `filterBase.makeStackDiffer` — re-exported for direct
+ * import: `import {makeStackDiffer} from 'stream-json/filters/filter-base.js'`.
+ *
+ * Creates a function that emits structural tokens (start/end object/array, key)
+ * to reconstruct the surrounding JSON envelope between two stack positions.
+ *
+ * @param previousStack - Starting stack (defaults to empty — root).
+ * @returns A function that, given the current stack, the current token, and
+ * the filter options, returns a `Many<Token>` of the bridging structural tokens.
+ */
+declare function makeStackDiffer(
+  previousStack?: (string | number | null)[]
+): (stack: (string | number | null)[], chunk: parser.Token | null, options?: FilterBaseOptions) => Many<parser.Token>;
+
+export default filterBase;
+export {filterBase, makeStackDiffer};
+export type {FilterBaseOptions, FilterBaseConfig};

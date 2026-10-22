@@ -1,0 +1,11 @@
+import {none} from '../defs.js';
+
+/**
+ * Creates a function that skips `n` elements.
+ * @param n number of elements to skip
+ * @returns a function that takes a value and returns a value or {@link none} when skipping
+ */
+declare function skip<T = unknown>(n: number): (value: T) => T | typeof none;
+
+export default skip;
+export {skip};
