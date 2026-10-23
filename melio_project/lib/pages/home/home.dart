@@ -24,13 +24,11 @@ class HomePage extends StatelessWidget {
       ),
 
       //wrapping body in a stack to float widgets over content
-     body: Stack(
+      body: Stack(
         children: [
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 150.0),
-            child: Center(
-              child: Text("Home Content"),
-            ),
+            child: Center(child: Text("Home Content")),
           ),
           Positioned(
             bottom: 20,

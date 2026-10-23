@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
-import "package:melio_project/pages/login/components/gradient_box.dart";
+import "package:melio_project/pages/access/components/gradient_box.dart";
 import "components/log_in_botton.dart";
 import "components/create_account_button.dart";
 import '../create_account/create_account_page.dart';
@@ -83,7 +83,11 @@ class LoginPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const GradientBox(logoLetter: 'M'),
+              const GradientBox(
+                logoLetter: 'M',
+                subtext: "Your personal wellness companion",
+                headerText: "Melio",
+              ),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 28.0),

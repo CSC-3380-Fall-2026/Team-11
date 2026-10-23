@@ -10,7 +10,7 @@ class ChatMessage {
 class ChatbotPage extends StatefulWidget {
   const ChatbotPage({super.key});
 
-  @override 
+  @override
   State<ChatbotPage> createState() => _ChatbotPageState();
 }
 
@@ -30,8 +30,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
     });
 
     //replace this with your actual API call to the chatbot
-    await Future.delayed(const Duration(seconds: 2)); // Simulate a delay for the chatbot response
-    final aiResponse = "Hello! This is a simulated response from the chatbot. You said: '$text'"; // Simulated response
+    await Future.delayed(
+      const Duration(seconds: 2),
+    ); // Simulate a delay for the chatbot response
+    final aiResponse =
+        "Hello! This is a simulated response from the chatbot. You said: '$text'"; // Simulated response
 
     setState(() {
       _messages.add(ChatMessage(text: aiResponse, isUser: false));
@@ -39,7 +42,6 @@ class _ChatbotPageState extends State<ChatbotPage> {
     });
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +55,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
                 final message = _messages[index];
                 return ListTile(
                   title: Align(
-                    alignment:
-                        message.isUser ? Alignment.centerRight : Alignment.centerLeft,
+                    alignment: message.isUser
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
                     child: Container(
                       padding: const EdgeInsets.all(12.0),
                       color: message.isUser ? Colors.blue : Colors.grey,
@@ -73,8 +76,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
                   child: TextField(
                     controller: _textController,
                     onSubmitted: (text) => _sendMessage(),
-                    decoration:
-                        const InputDecoration(hintText: 'Enter your message'),
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your message',
+                    ),
                   ),
                 ),
                 IconButton(
