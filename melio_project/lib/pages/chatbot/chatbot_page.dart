@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 //direct free sdk for generative ai
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:melio_project/pages/chatbot/chatbot_theme.dart';
 
 class ChatMessage {
   final String text;
@@ -41,12 +42,18 @@ class _ChatbotPageState extends State<ChatbotPage> {
     _chatSession = _model.startChat();
   }
 
+  @override
+  void dispose(){
+    _textController.dispose();
+    _scrollController.dispose();
+  }
+
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_){
       if (_scrollController.hasClients){
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent, 
-          duration: const Duration(seconds: 3), 
+          duration: const Duration(milliseconds: 300), 
           curve: Curves.easeOut);
       }
     });
@@ -87,50 +94,132 @@ class _ChatbotPageState extends State<ChatbotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('Chatbot')),
+      backgroundColor: ChatBotTheme.background,
+      appBar: ChatBotTheme.buildAppBar(title: 'Melio Assistant'),
       body: Column(
         children: [
+          //chat messages area
           Expanded(
             child: ListView.builder(
-              itemCount: _messages.length,
+              controller: _scrollController,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0, vertical: 12.0
+              ),
+              itemCount: _messages.length + (_isLoading ? 1 : 0),
               itemBuilder: (context, index) {
+                if (index == _messages.length){
+                  return _buildLoadingBubble();
+                }
                 final message = _messages[index];
-                return ListTile(
-                  title: Align(
-                    alignment:
-                        message.isUser ? Alignment.centerRight : Alignment.centerLeft,
-                    child: Container(
-                      padding: const EdgeInsets.all(12.0),
-                      color: message.isUser ? Colors.blue : Colors.grey,
-                      child: Text(message.text),
-                    ),
-                  ),
-                );
-              },
+                return _buildBubble(message);
+              }      
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _textController,
-                    onSubmitted: (text) => _sendMessage(),
-                    decoration:
-                        const InputDecoration(hintText: 'Enter your message'),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () => _sendMessage(),
-                ),
-              ],
+
+          //themed input bar
+
+          _buildInputBar(),
+        ],
+      ),
+    );        
+  }
+
+  //forumlate bubble w chatbotTheme class           
+  Widget _buildBubble (ChatMessage message) {
+    final isUser = message.isUser;
+
+    return Align(
+      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 6.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical : 12.0),
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.75,
+          ),
+          //rounded static decoration
+        decoration: ChatBotTheme.bubbleDecoration(isUser: isUser),
+        child: Text (
+          message.text,
+            //josefin sans bodylarge
+          style: ChatBotTheme.melioTextTheme.bodyLarge,
+        ),
+      ),
+    );
+  }
+
+//typing/thinking indicator
+Widget _buildLoadingBubble() {
+  return Align(
+    alignment: Alignment.centerLeft,
+    child: Container(
+      margin: const EdgeInsets.symmetric(vertical: 6.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      decoration: ChatBotTheme.bubbleDecoration(isUser: false),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(
+            width: 14,
+            height: 14,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text( "Melio is thinking...", 
+          style: ChatBotTheme.melioTextTheme.bodyLarge?.copyWith(
+            fontStyle: FontStyle.italic, 
             ),
           ),
         ],
       ),
+    ),
+  );
+}
+
+//input box 
+  Widget _buildInputBar(){
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12.0, vertical: 8.0),
+        color: Colors.white,
+        child: SafeArea(
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _textController,
+                  style: const TextStyle(
+                    color: Colors.black87),
+                    onSubmitted: (_) => _sendMessage(),
+                    decoration: InputDecoration(
+                      hintText: 'Ask Melio anything...',
+                      hintStyle: TextStyle(color: Colors.grey.shade400),
+                      filled: true,
+                      fillColor: ChatBotTheme.background,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 10.0,
+                      ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+              ),
+                const SizedBox (width: 8.0),
+                IconButton.filled(
+                  icon: const Icon (Icons.send_rounded),
+                  style: IconButton.styleFrom(
+                    backgroundColor: ChatBotTheme.userTextBox,
+                    foregroundColor: Colors.white,
+                    ),
+                    onPressed: _sendMessage,
+                ),
+              ],
+            ),
+        ),
     );
   }
 }
