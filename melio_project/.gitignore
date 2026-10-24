@@ -56,4 +56,5 @@ build/
 # CocoaPods & Xcode temporary files
 macos/Pods/
 macos/Podfile.lock
-macos/Runner.xcworkspace/
+macos/Runner.xcworkspace
+assets/images/secrets.env
