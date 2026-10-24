@@ -27,19 +27,11 @@ class _NutritionTabState extends State<NutritionTab> {
           Expanded(
             child: ListView(
               children: [
-                Wrap(
-                  spacing: 8.0,
-                  children: ["Meal", "Snack", "Drink"]
-                      .map(
-                        (o) => ChoiceChip(
-                          label: Text(o),
-                          selected: type == o,
-                          onSelected: (_) => setState(() => type = o),
-                        ),
-                      )
-                      .toList(),
+                const Text(
+                  "Time of day",
+                  style: TextStyle(fontWeight: FontWeight.w800),
                 ),
-                const SizedBox(height: 16.0),
+                const SizedBox(height: 8.0),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -58,17 +50,44 @@ class _NutritionTabState extends State<NutritionTab> {
                   ),
                 ),
                 const SizedBox(height: 16.0),
+                const Text(
+                  "Type",
+                  style: TextStyle(fontWeight: FontWeight.w800),
+                ),
+                const SizedBox(height: 8.0),
+                Wrap(
+                  spacing: 8.0,
+                  children: ["Meal", "Snack", "Drink"]
+                      .map(
+                        (o) => ChoiceChip(
+                          label: Text(o),
+                          selected: type == o,
+                          onSelected: (_) => setState(() => type = o),
+                        ),
+                      )
+                      .toList(),
+                ),
+                const SizedBox(height: 16.0),
+                Text(
+                  "Describe your ${type.toLowerCase()}",
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
+                const SizedBox(height: 8.0),
                 TextField(
                   controller: descriptionController,
                   maxLines: 3,
-                  decoration: InputDecoration(
-                    labelText: "Describe your ${type.toLowerCase()}",
+                  decoration: const InputDecoration(
                     hintText:
                         "e.g. 2 scrambled eggs, toast with butter, orange juice",
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 16.0),
+                const Text(
+                  "Macros",
+                  style: TextStyle(fontWeight: FontWeight.w800),
+                ),
+                const SizedBox(height: 8.0),
                 Wrap(
                   spacing: 8.0,
                   children: [
