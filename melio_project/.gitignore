@@ -26,7 +26,6 @@ migrate_working_dir/
 # Flutter/Dart/Pub related
 **/doc/api/
 assets/secrets.env
-lib/.env
 **/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins-dependencies
@@ -56,5 +55,4 @@ build/
 # CocoaPods & Xcode temporary files
 macos/Pods/
 macos/Podfile.lock
-macos/Runner.xcworkspace
-assets/images/secrets.env
+macos/Runner.xcworkspace/
