@@ -23,11 +23,23 @@ class FullNameTextbox extends StatelessWidget {
           fontWeight: FontWeight.w400,
         ),
         filled: true,
-        fillColor: Colors.grey[200],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
+        fillColor: const Color(0xFFF7F7FC),
+
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Color(0xFFE4E4EE),
+            width: 1.0,
+          ),
         ),
+
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Color(0xFF2D3142),
+            width: 1.0,
+          )
+        )
       ),
     );
   }
