@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:melio_project/pages/access/components/gradient_box.dart";
+import "package:melio_project/pages/login_user/login_user_page.dart";
 import "components/log_in_botton.dart";
 import "components/create_account_button.dart";
 import '../create_account/create_account_page.dart';
@@ -9,8 +10,8 @@ import "package:firebase_auth/firebase_auth.dart";
 import '../services/account_authentication.dart';
 import '../services/google_authentication.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key}); //removed const
+class AccessPage extends StatelessWidget {
+  AccessPage({super.key}); //removed const
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -124,7 +125,14 @@ class LoginPage extends StatelessWidget {
 
                     LogInBotton(
                       text: 'Log In',
-                      onPressed: () => _Login(context),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginUserPage(),
+                          ),
+                        );
+                      },
                     ),
 
                     const SizedBox(height: 24),
