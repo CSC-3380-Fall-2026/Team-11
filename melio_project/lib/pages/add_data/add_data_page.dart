@@ -35,7 +35,10 @@ class AddDataPage extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(children: [WorkoutTab(), NutritionTab()]),
+        body: const TabBarView(
+          physics: NeverScrollableScrollPhysics(),
+          children: [WorkoutTab(), NutritionTab()],
+        ),
       ),
     );
   }
