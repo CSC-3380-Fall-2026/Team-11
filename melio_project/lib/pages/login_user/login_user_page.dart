@@ -6,7 +6,7 @@ import "package:google_fonts/google_fonts.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:melio_project/pages/create_account/create_account_page.dart";
 import '../services/account_authentication.dart';
-import '../home/home.dart';
+import '../home/home_page.dart';
 
 class LoginUserPage extends StatefulWidget {
   const LoginUserPage({super.key});
