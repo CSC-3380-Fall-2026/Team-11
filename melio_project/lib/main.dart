@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:melio_project/pages/access/access_page.dart';
-import 'package:melio_project/pages/home/home.dart';
+import 'package:melio_project/pages/home/home_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
