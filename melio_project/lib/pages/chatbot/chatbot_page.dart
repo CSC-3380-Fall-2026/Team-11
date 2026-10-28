@@ -15,7 +15,7 @@ class ChatMessage {
 class ChatbotPage extends StatefulWidget {
   const ChatbotPage({super.key});
 
-  @override 
+  @override
   State<ChatbotPage> createState() => _ChatbotPageState();
 }
 
@@ -69,7 +69,15 @@ class _ChatbotPageState extends State<ChatbotPage> {
       _isLoading = true;
     });
 
-    _scrollToBottom();
+    //replace this with your actual API call to the chatbot
+    await Future.delayed(
+      const Duration(seconds: 2),
+    ); // Simulate a delay for the chatbot response
+  
+    final aiResponse =
+        "Hello! This is a simulated response from the chatbot. You said: '$text'"; // Simulated response
+    
+   _scrollToBottom();
 
     try {
       final response = await _chatSession.sendMessage(
@@ -88,6 +96,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
       setState(() {
         _isLoading = false;
       });
+      _scrollToBottom();
     }
   }
   

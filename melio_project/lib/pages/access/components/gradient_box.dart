@@ -4,8 +4,15 @@ import 'dart:math' as math;
 
 class GradientBox extends StatelessWidget {
   final String logoLetter;
+  final String subtext;
+  final String headerText;
 
-  const GradientBox({super.key, required this.logoLetter});
+  const GradientBox({
+    super.key,
+    required this.logoLetter,
+    required this.subtext,
+    required this.headerText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +58,21 @@ class GradientBox extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            'Melio',
+            headerText,
             style: GoogleFonts.josefinSans(
               fontSize: 40,
               fontWeight: FontWeight.w700,
               color: Colors.white,
               letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            subtext,
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: Colors.white,
+              fontWeight: FontWeight.w300,
             ),
           ),
         ],
