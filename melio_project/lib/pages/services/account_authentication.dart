@@ -72,4 +72,6 @@ class AuthService {
       rethrow; // rethrow the exception to be handled by the caller
     }
   }
+
+  Future<void> sendPasswordResetEmail(String email) async {}
 }
