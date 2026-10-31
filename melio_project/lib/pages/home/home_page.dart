@@ -4,6 +4,7 @@ import "package:melio_project/pages/chatbot/chatbot_page.dart";
 import "package:melio_project/pages/add_data/add_data_page.dart";
 import "package:melio_project/pages/calendar/calendar_page.dart";
 import "package:melio_project/pages/profile/profile_page.dart";
+import "package:melio_project/pages/workout_log/workout_log_page.dart";
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -136,6 +137,15 @@ class HomePage extends StatelessWidget {
                 },
               ),
               IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
+              IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
+              IconButton(icon: const Icon(Icons.fitness_center_rounded), onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const
+                  WorkoutLogPage()),
+                );
+              }),
+              
               const SizedBox(width: 140), // space for the plus button
               IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
               IconButton(
