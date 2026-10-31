@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:melio_project/pages/chatbot/chatbot_page.dart";
 import "package:melio_project/pages/add_data/add_data_page.dart";
+import "package:melio_project/pages/calendar/calendar_page.dart";
 import "package:melio_project/pages/profile/profile_page.dart";
 import "package:melio_project/pages/workout_log/workout_log_page.dart";
 
@@ -124,6 +125,18 @@ class HomePage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              IconButton(
+                icon: const Icon(Icons.calendar_today_outlined),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CalendarPage(),
+                    ),
+                  );
+                },
+              ),
+              IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
               IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
               IconButton(icon: const Icon(Icons.fitness_center_rounded), onPressed: () {
                 Navigator.push(
