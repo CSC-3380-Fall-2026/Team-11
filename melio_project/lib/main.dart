@@ -11,7 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: "assets/secrets.env");
+  await dotenv.load(fileName: "secrets.env");
 
   try {
     await Firebase.initializeApp(

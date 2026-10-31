@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:melio_project/pages/chatbot/chatbot_page.dart";
 import "package:melio_project/pages/add_data/add_data_page.dart";
+import "package:melio_project/pages/profile/profile_page.dart";
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -126,7 +127,17 @@ class HomePage extends StatelessWidget {
               IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
               const SizedBox(width: 140), // space for the plus button
               IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
-              IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
+              IconButton(
+                icon: const Icon(Icons.account_circle),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfilePage(),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
