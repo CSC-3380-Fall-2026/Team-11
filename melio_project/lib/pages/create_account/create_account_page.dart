@@ -139,6 +139,30 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             return;
                           }
 
+                          final namePattern = RegExp(r"^[A-Za-z'’]+$");
+                          if (!namePattern.hasMatch(fullName)) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Name can contain letters and apostrophes only.',
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+
+                          final emailPattern = RegExp(
+                            r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
+                          );
+                          if (!emailPattern.hasMatch(email)) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Enter a valid email.'),
+                              ),
+                            );
+                            return;
+                          }
+
                           try {
                             final UserCredential userCredential =
                                 await _authService.createUser(
