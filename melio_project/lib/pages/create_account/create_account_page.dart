@@ -7,6 +7,7 @@ import "package:google_fonts/google_fonts.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import '../services/account_authentication.dart';
 import '../home/home_page.dart';
+import '../create_account/primary_goal_page.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -222,6 +223,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           );
                         },
                         child: const Text("Go to Home"),
+                      ),
+                      const SizedBox(height: 12),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const PrimaryGoalPage(),
+                            ),
+                          );
+                        },
+                        child: const Text("To next step"),
                       ),
                     ],
                   ),
