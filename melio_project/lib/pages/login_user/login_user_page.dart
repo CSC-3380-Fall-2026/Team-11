@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:melio_project/pages/create_account/create_account_page.dart";
+import "package:melio_project/pages/login_user/forgot_password_page.dart";
 import '../services/account_authentication.dart';
 import '../home/home_page.dart';
 
@@ -125,7 +126,12 @@ class _LoginUserPageState extends State<LoginUserPage> {
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
+                                );
+                              },
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.zero,
                                 minimumSize: Size.zero,
