@@ -11,7 +11,6 @@ class AuthService {
     String password,
     String email,
   ) async {
-
     UserCredential userCredential;
 
     try {
@@ -73,5 +72,49 @@ class AuthService {
     }
   }
 
-  Future<void> sendPasswordResetEmail(String email) async {}
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _authService.sendPasswordResetEmail(
+        email: email.trim(),
+        actionCodeSettings: ActionCodeSettings(
+          url: 'https://melioapp.page.link/reset-password',
+          handleCodeInApp: true,
+          androidPackageName: 'com.example.melio_project',
+          iOSBundleId: 'com.example.melioProject',
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No account found for that email address.');
+      } else if (e.code == 'invalid-email') {
+        print('The email address is improperly formatted.');
+      }
+      rethrow;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<void> confirmPasswordReset({
+    required String code,
+    required String newPassword,
+  }) async {
+    try {
+      await _authService.confirmPasswordReset(
+        code: code,
+        newPassword: newPassword.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'expired-action-code') {
+        print('The reset link has expired.');
+      } else if (e.code == 'invalid-action-code') {
+        print('The reset code is invalid or already used.');
+      }
+      rethrow;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
 }
