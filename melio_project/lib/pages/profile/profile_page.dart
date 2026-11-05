@@ -2,7 +2,12 @@ import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
+import "package:melio_project/pages/chatbot/chatbot_theme.dart";
 
+typedef T = ChatBotTheme;
+
+const _dark = Color(0xFF2B2833);
+const _muted = Color(0xFF7A7685);
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -45,20 +50,22 @@ class ProfilePage extends StatelessWidget {
         final String? photoUrl = data['photoUrl'] ?? currentUser.photoURL;
     
     
-     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Profile",
-          style: GoogleFonts.roboto(fontSize: 24, fontWeight: FontWeight.bold),
+     return Theme(
+      data: ThemeData(
+        scaffoldBackgroundColor: T.background,
+        textTheme:GoogleFonts.josefinSansTextTheme().apply(
+          bodyColor:_dark,
+          displayColor:_dark,
         ),
       ),
       child: Scaffold(
-        appBar: T.buildAppBar(
-          title: 'Profile',
-          actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.tune))],
-        ),
-        body: ListView(
-          padding: const EdgeInsets.all(24),
+      appBar: T.buildAppBar(
+        title: "Profile",
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.tune))
+        ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
           children: [
             // Avatar + edit button
             Row(
@@ -202,7 +209,8 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
-      ),
+     ),);
+    },
     );
   }
 }
@@ -235,7 +243,6 @@ class Stat extends StatelessWidget {
         ],
       ),
     );
-  },
-  );
+  }
 }
-}
+
