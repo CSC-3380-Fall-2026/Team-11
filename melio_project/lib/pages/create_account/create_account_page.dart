@@ -140,12 +140,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             return;
                           }
 
-                          final namePattern = RegExp(r"^[A-Za-z'’]+$");
+                          // a space, hyphen, or apostrophe has to sit between letters
+                          final namePattern = RegExp(
+                            r"^[A-Za-z]+([ '’-][A-Za-z]+)*$",
+                          );
                           if (!namePattern.hasMatch(fullName)) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                  'Name can contain letters and apostrophes only.',
+                                  'Name can contain letters, spaces, hyphens, and apostrophes only.',
                                 ),
                               ),
                             );
