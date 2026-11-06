@@ -136,16 +136,18 @@ class HomePage extends StatelessWidget {
                   );
                 },
               ),
-              IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
-              IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
-              IconButton(icon: const Icon(Icons.fitness_center_rounded), onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const
-                  WorkoutLogPage()),
-                );
-              }),
-              
+              IconButton(
+                icon: const Icon(Icons.fitness_center_rounded),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WorkoutLogPage(),
+                    ),
+                  );
+                },
+              ),
+
               const SizedBox(width: 140), // space for the plus button
               IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
               IconButton(
