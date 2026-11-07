@@ -41,4 +41,23 @@ class WorkoutService {
     if (_workoutRef == null) return;
     await _workoutRef!.doc(workoutId).delete();
   }
+
+  //Get today's workouts
+  Stream<WorkoutRoutine?> getTodaysWorkout() {
+    const daysOfWeek = [
+      'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    final String todayName = daysOfWeek[DateTime.now().weekday - 1];
+
+    return getWorkoutsStream().map((routines) {
+      try {
+          return routines.firstWhere(
+            (routine) => routine.scheduledDays.any(
+              (day) => day.trim().toLowerCase() == todayName.toLowerCase(),
+            ),
+          );
+      } catch (_) {
+        return null; // No workout found for today
+      }
+    });
+  }    
 }

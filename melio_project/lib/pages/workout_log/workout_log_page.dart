@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'workout_model.dart';
 import 'workout_service.dart';
-//import 'create_routine_page.dart';
+import 'create_routine_page.dart';
 
 class WorkoutLogPage extends StatelessWidget {
   const WorkoutLogPage({super.key});
@@ -18,10 +18,10 @@ class WorkoutLogPage extends StatelessWidget {
       // The "+ New Routine" button that opens your creator screen
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          //Navigator.push(
-            //context,
-            //MaterialPageRoute(builder: (context) => const CreateRoutinePage()),
-          //);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CreateRoutinePage()),
+          );
         },
         icon: const Icon(Icons.add),
         label: const Text('New Routine'),
@@ -122,12 +122,12 @@ class WorkoutLogPage extends StatelessWidget {
                     onSelected: (value) async {
                       if (value == 'edit') {
                         // Open creator pre-filled with this routine's data
-                        //Navigator.push(
-                          //context,
-                          //MaterialPageRoute(
-                            //builder: (context) => CreateRoutinePage(routine: routine),
-                          //),
-                        //);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CreateRoutinePage(routine: routine),
+                          ),
+                        );
                       } else if (value == 'delete') {
                         if (routine.id != null) {
                           await WorkoutService().deleteWorkout(routine.id!);
