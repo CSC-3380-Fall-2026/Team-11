@@ -5,6 +5,7 @@ import "package:melio_project/pages/add_data/add_data_page.dart";
 import "package:melio_project/pages/calendar/calendar_page.dart";
 import "package:melio_project/pages/profile/profile_page.dart";
 import "package:melio_project/pages/workout_log/workout_log_page.dart";
+import "package:melio_project/pages/workout_log/workout_log_widget.dart";
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -30,9 +31,28 @@ class HomePage extends StatelessWidget {
       //wrapping body in a stack to float widgets over content
       body: Stack(
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 150.0),
-            child: Center(child: Text("Home Content")),
+          ListView(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
+            children: [
+              TodaysWorkoutWidget(onAddWorkout: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AddDataPage()),
+                );
+              },
+              onSeeAll: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WorkoutLogPage()),
+                );
+              },
+              onStartWorkout: (workoutDoc) {
+                // Handle starting a workout
+              }
+            ),
+            //PLACE HOLDER FOR OTHER WIDGETS IN THE HOME PAGE
+            //Add other widgets here as needed
+            ],
           ),
           Positioned(
             bottom: 20,
