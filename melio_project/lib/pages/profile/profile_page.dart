@@ -77,7 +77,7 @@ class ProfilePage extends StatelessWidget {
                       radius: 42,
                       backgroundColor: T.mint,
                       backgroundImage: photoUrl != null
-                          ? NetworkImage(photoUrl!)
+                          ? NetworkImage(photoUrl)
                           : null,
                       child: photoUrl == null
                           ? const Icon(
@@ -175,7 +175,7 @@ class ProfilePage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: T.lavender.withOpacity(0.2),
+                color: T.lavender.withValues(alpha:0.2),
                 border: Border.all(color: T.lavender),
                 borderRadius: BorderRadius.circular(12),
               ),
