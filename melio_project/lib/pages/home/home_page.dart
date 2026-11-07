@@ -3,6 +3,7 @@ import "package:google_fonts/google_fonts.dart";
 import "package:melio_project/pages/chatbot/chatbot_page.dart";
 import "package:melio_project/pages/add_data/add_data_page.dart";
 import "package:melio_project/pages/calendar/calendar_page.dart";
+import "package:melio_project/pages/calendar/calendar_widget.dart";
 import "package:melio_project/pages/profile/profile_page.dart";
 import "package:melio_project/pages/workout_log/workout_log_page.dart";
 import "package:melio_project/pages/workout_log/workout_log_widget.dart";
@@ -50,6 +51,13 @@ class HomePage extends StatelessWidget {
                 // Handle starting a workout
               }
             ),
+            const SizedBox(height: 16),
+            CalendarWidget(onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CalendarPage()),
+              );
+            }),
             //PLACE HOLDER FOR OTHER WIDGETS IN THE HOME PAGE
             //Add other widgets here as needed
             ],
@@ -145,17 +153,7 @@ class HomePage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(
-                icon: const Icon(Icons.calendar_today_outlined),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CalendarPage(),
-                    ),
-                  );
-                },
-              ),
+              IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
               IconButton(
                 icon: const Icon(Icons.fitness_center_rounded),
                 onPressed: () {
