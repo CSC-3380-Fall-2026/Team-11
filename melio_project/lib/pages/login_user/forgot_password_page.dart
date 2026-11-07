@@ -3,6 +3,7 @@ import "package:melio_project/pages/create_account/components/email_textbox.dart
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:firebase_auth/firebase_auth.dart";
+import "package:melio_project/pages/login_user/reset_password_page.dart";
 import '../services/account_authentication.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -193,6 +194,24 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ),
                       ),
                       const SizedBox(height: 8),
+
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ResetPasswordPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Go to next page',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
