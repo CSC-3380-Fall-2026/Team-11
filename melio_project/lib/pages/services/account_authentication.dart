@@ -1,39 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
-/*
-the following code is a snippet from the firebase documentation on how to 
-create a user with email and password. I will use this as a reference to implement 
-the createUserWithEmailAndPassword method in the AuthService class.
-
-try {
-  final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    email: emailAddress,
-    password: password,
-  );
-} on FirebaseAuthException catch (e) {
-  if (e.code == 'weak-password') {
-    print('The password provided is too weak.');
-  } else if (e.code == 'email-already-in-use') {
-    print('The account already exists for that email.');
-  }
-} catch (e) {
-  print(e);
-}
-*/
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'user_model.dart';
 
 class AuthService {
   final FirebaseAuth _authService = FirebaseAuth.instance;
+  final FirebaseFirestore _dataBase = FirebaseFirestore.instance;
 
- //wrapped in reuseable async method to create a user with email and password
-  Future<UserCredential> createUserWithEmailAndPassword(String username, String password) async {
+  Future<UserCredential> createUser(
+    String fullName,
+    String password,
+    String email,
+  ) async {
+    UserCredential userCredential;
 
-    String email = "${username.trim()}@melio.com"; // Assuming the username is the email address
     try {
-       UserCredential userCredential = await _authService.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+      userCredential = await _authService.createUserWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
       );
-    return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -45,32 +29,36 @@ class AuthService {
       print(e);
       rethrow; // rethrow the exception to be handled by the caller
     }
-  }
-/* 
-this snippet is a reference to the firebase documentation on how to 
-sign in a user with email and passowrd.
 
-try {
-  final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-    email: emailAddress,
-    password: password
-  );
-} on FirebaseAuthException catch (e) {
-  if (e.code == 'user-not-found') {
-    print('No user found for that email.');
-  } else if (e.code == 'wrong-password') {
-    print('Wrong password provided for that user.');
-  }
-} */
+    // Store user data in Firestore
+    final uid = userCredential.user!.uid;
 
-  Future<UserCredential> loginWithEmailAndPassword(String username, String password) async {
-    String email = "${username.trim()}@melio.com"; // Assuming the username is the email address
+    WriteBatch batch = _dataBase.batch();
+
+    DocumentReference userRef = _dataBase.collection('users').doc(uid);
+    UserModel newUser = UserModel(
+      uid: uid,
+      fullName: fullName.trim(),
+      email: email.trim(),
+      createdAt: DateTime.now(),
+    );
+
+    batch.set(userRef, newUser.toMap());
+
+    await batch.commit();
+
+    return userCredential;
+  }
+
+  Future<UserCredential> loginWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     try {
-      UserCredential userCredential = await _authService.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+      return await _authService.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
       );
-      return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No account found for that username.');
@@ -81,6 +69,52 @@ try {
     } catch (e) {
       print(e);
       rethrow; // rethrow the exception to be handled by the caller
+    }
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _authService.sendPasswordResetEmail(
+        email: email.trim(),
+        actionCodeSettings: ActionCodeSettings(
+          url: 'https://melioapp.page.link/reset-password',
+          handleCodeInApp: true,
+          androidPackageName: 'com.example.melio_project',
+          iOSBundleId: 'com.example.melioProject',
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No account found for that email address.');
+      } else if (e.code == 'invalid-email') {
+        print('The email address is improperly formatted.');
+      }
+      rethrow;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<void> confirmPasswordReset({
+    required String code,
+    required String newPassword,
+  }) async {
+    try {
+      await _authService.confirmPasswordReset(
+        code: code,
+        newPassword: newPassword.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'expired-action-code') {
+        print('The reset link has expired.');
+      } else if (e.code == 'invalid-action-code') {
+        print('The reset code is invalid or already used.');
+      }
+      rethrow;
+    } catch (e) {
+      print(e);
+      rethrow;
     }
   }
 }
