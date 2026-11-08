@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => AccessPage(),
         '/home': (context) => HomePage(),
 
-        // home: LoginPage(), // App start point is the LoginPage
+        // home: AccessPage(), // App start point is the AccessPage
       },
     );
   }
