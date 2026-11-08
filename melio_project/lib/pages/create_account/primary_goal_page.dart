@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:melio_project/pages/create_account/body_and_targets_page.dart';
 import 'create_account_page.dart';
+import 'body_and_targets_page.dart';
 
 enum DotStatus { completed, active, upcoming }
 
@@ -46,6 +48,13 @@ class _PrimaryGoalPageState extends State<PrimaryGoalPage> {
       );
       return;
     }
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const BodyAndTargetsPage(),
+      ),
+    );
   }
 
   Widget _buildDot({required DotStatus status}) {
