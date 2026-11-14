@@ -1,6 +1,9 @@
+import "dart:async";
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:melio_project/pages/services/calendar_plan.dart";
+import "package:melio_project/pages/workout_log/workout_model.dart";
+import "package:melio_project/pages/workout_log/workout_service.dart";
 
 class CalendarView extends StatefulWidget {
   const CalendarView({super.key});
@@ -39,13 +42,30 @@ class _CalendarViewState extends State<CalendarView> {
     "Sunday",
   ];
 
-  // empty for now, this will get filled from firestore once the database is done
+  // one-time plans on a single date, nothing adds to this yet
   final List<CalendarPlan> plans = [];
+
+  // the user's saved workout routines, these repeat every week
+  List<WorkoutRoutine> routines = [];
+  StreamSubscription<List<WorkoutRoutine>>? routineListener;
 
   @override
   void initState() {
     super.initState();
     goToToday();
+
+    // keeps the calendar updated whenever a routine is added, edited, or deleted
+    routineListener = WorkoutService().getWorkoutsStream().listen((saved) {
+      setState(() {
+        routines = saved;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    routineListener?.cancel();
+    super.dispose();
   }
 
   void goToToday() {
@@ -84,6 +104,21 @@ class _CalendarViewState extends State<CalendarView> {
     for (var plan in plans) {
       if (isSameDay(plan.date, day)) {
         result.add(plan);
+      }
+    }
+
+    // a routine shows up on every day of the week it was scheduled for
+    String dayName = dayNames[day.weekday - 1];
+    for (var routine in routines) {
+      if (routine.scheduledDays.contains(dayName)) {
+        result.add(
+          CalendarPlan(
+            title: routine.name,
+            time: "${routine.exercises.length} exercises",
+            type: "workout",
+            date: day,
+          ),
+        );
       }
     }
     return result;
