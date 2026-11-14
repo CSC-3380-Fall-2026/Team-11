@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:melio_project/pages/create_account/body_and_targets_page.dart';
 import 'create_account_page.dart';
-import 'body_and_targets_page.dart';
 
 enum DotStatus { completed, active, upcoming }
 

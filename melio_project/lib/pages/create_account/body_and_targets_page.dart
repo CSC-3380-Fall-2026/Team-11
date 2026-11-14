@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'primary_goal_page.dart';
+import 'protein_and_activity_page.dart';
 
 class BodyAndTargetsPage extends StatefulWidget {
   const BodyAndTargetsPage({super.key});
@@ -46,6 +47,13 @@ class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
       );
       return;
     }
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ProteinAndActivityPage(),
+      ),
+    );
   }
 
   Widget _buildDot({required DotStatus status}) {
