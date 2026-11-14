@@ -3,6 +3,8 @@ import "package:google_fonts/google_fonts.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:melio_project/pages/chatbot/chatbot_theme.dart";
+import "package:melio_project/pages/profile/settings_page.dart";
+import "package:melio_project/pages/profile/edit_profile_page.dart";
 
 typedef T = ChatBotTheme;
 
@@ -14,9 +16,6 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    const double avatarRadius = 100;
-
     final currentUser = FirebaseAuth.instance.currentUser;
 
     if (currentUser == null) {
@@ -59,7 +58,15 @@ class ProfilePage extends StatelessWidget {
             appBar: T.buildAppBar(
               title: "Profile",
               actions: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.tune)),
+                IconButton(
+                  icon: const Icon(Icons.settings_outlined),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const SettingsPage()),
+                    );
+                  },
+                ),
               ],
             ),
             body: ListView(
@@ -101,7 +108,14 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                     OutlinedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const EditProfilePage(),
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.edit_outlined, size: 14),
                       label: const Text('Edit profile'),
                       style: OutlinedButton.styleFrom(
@@ -138,11 +152,12 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ],
                 ),
+
                 // Bio
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   'Bio goes here.........................................................',
-                  style: const TextStyle(fontSize: 14, color: _muted),
+                  style: TextStyle(fontSize: 14, color: _muted),
                 ),
 
                 const Divider(height: 48),
@@ -173,7 +188,7 @@ class ProfilePage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: T.lavender.withValues(alpha: 0.2),
+                    color: T.lavender.withOpacity(0.2),
                     border: Border.all(color: T.lavender),
                     borderRadius: BorderRadius.circular(12),
                   ),
