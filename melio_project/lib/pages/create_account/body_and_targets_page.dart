@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'primary_goal_page.dart';
-import 'protein_and_activity_page.dart';
 
 class BodyAndTargetsPage extends StatefulWidget {
   const BodyAndTargetsPage({super.key});
@@ -16,29 +15,11 @@ class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
   final TextEditingController _targetWeightController = TextEditingController();
   final TextEditingController _calorieGoalController = TextEditingController();
 
-  bool _isFormValid = false;
+  bool get _isFormValid =>
+      _currentWeightController.text.trim().isNotEmpty &&
+      _targetWeightController.text.trim().isNotEmpty &&
+      _calorieGoalController.text.trim().isNotEmpty;
   String? _selectedQuickPick;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentWeightController.addListener(_validateForm);
-    _targetWeightController.addListener(_validateForm);
-    _calorieGoalController.addListener(_validateForm);
-  }
-
-  void _validateForm() {
-    final isValid =
-        _currentWeightController.text.trim().isNotEmpty &&
-        _targetWeightController.text.trim().isNotEmpty &&
-        _calorieGoalController.text.trim().isNotEmpty;
-
-    if (isValid != _isFormValid) {
-      setState(() {
-        _isFormValid = isValid;
-      });
-    }
-  }
 
   @override
   void dispose() {
@@ -56,19 +37,15 @@ class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
   }
 
   void _onContinue() {
+    debugPrint("Continue button clicked! Form valid: $_isFormValid");
     if (!_isFormValid) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Please fill out all text boxes to contine"),
+          content: Text("Please fill out all text boxes to continue"),
         ),
       );
       return;
     }
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const ProteinAndActivityPage()),
-    );
   }
 
   Widget _buildDot({required DotStatus status}) {
@@ -229,10 +206,9 @@ class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: FilledButton(
-                  onPressed: _isFormValid ? _onContinue : null,
+                  onPressed: _onContinue,
                   style: FilledButton.styleFrom(
                     backgroundColor: const Color(0xFF2D3142),
-                    disabledBackgroundColor: const Color(0xFFE4E4E7),
                     minimumSize: const Size(double.infinity, 54),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28),
@@ -244,9 +220,7 @@ class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
                       Text(
                         "Continue",
                         style: GoogleFonts.inter(
-                          color: _isFormValid
-                              ? Colors.white
-                              : const Color(0xFF8C90AB),
+                          color: Colors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -254,9 +228,7 @@ class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
                       const SizedBox(width: 8),
                       Icon(
                         Icons.arrow_forward,
-                        color: _isFormValid
-                            ? Colors.white
-                            : const Color(0xFF8C90AB),
+                        color: Colors.white,
                         size: 18,
                       ),
                     ],
