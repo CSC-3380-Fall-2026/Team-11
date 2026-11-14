@@ -1,7 +1,9 @@
 // tests the validity of input fields
 
 class Validators {
-  static final RegExp _namePattern = RegExp(r"^[A-Za-z]+([ '’-][A-Za-z]+)*$");
+  static final RegExp _namePattern = RegExp(
+    r"^[A-Za-zÀ-ÿ]+([ '’-][A-Za-zÀ-ÿ]+)*$",
+  );
   static final RegExp _emailPattern = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
   static String? fullName(String? value) {
@@ -17,6 +19,9 @@ class Validators {
   static String? email(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please fill in all fields';
+    }
+    if (value.contains('..') || value.endsWith('.')) {
+      return 'Enter a valid email.';
     }
     if (!_emailPattern.hasMatch(value)) {
       return 'Enter a valid email.';
