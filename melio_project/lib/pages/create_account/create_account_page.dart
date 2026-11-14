@@ -8,6 +8,7 @@ import "package:firebase_auth/firebase_auth.dart";
 import '../services/account_authentication.dart';
 import '../home/home_page.dart';
 import '../create_account/primary_goal_page.dart';
+import 'package:melio_project/unit_test/validators.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -140,30 +141,20 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             return;
                           }
 
-                          // a space, hyphen, or apostrophe has to sit between letters
-                          final namePattern = RegExp(
-                            r"^[A-Za-z]+([ '’-][A-Za-z]+)*$",
-                          );
-                          if (!namePattern.hasMatch(fullName)) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Name can contain letters, spaces, hyphens, and apostrophes only.',
-                                ),
-                              ),
-                            );
+                          // Name and email checks now live in utils/validators.dart
+                          final nameError = Validators.fullName(fullName);
+                          if (nameError != null) {
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text(nameError)));
                             return;
                           }
 
-                          final emailPattern = RegExp(
-                            r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
-                          );
-                          if (!emailPattern.hasMatch(email)) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Enter a valid email.'),
-                              ),
-                            );
+                          final emailError = Validators.email(email);
+                          if (emailError != null) {
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text(emailError)));
                             return;
                           }
 
