@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:melio_project/models/save_input.dart';
 import 'package:melio_project/pages/create_account/body_and_targets_page.dart';
 import 'create_account_page.dart';
-import 'body_and_targets_page.dart';
 
 enum DotStatus { completed, active, upcoming }
 
 class PrimaryGoalPage extends StatefulWidget {
-  const PrimaryGoalPage({super.key});
+  final SaveInput saveInput;
+
+  const PrimaryGoalPage({super.key, required this.saveInput});
 
   @override
   State<PrimaryGoalPage> createState() => _PrimaryGoalPageState();
@@ -15,6 +17,12 @@ class PrimaryGoalPage extends StatefulWidget {
 
 class _PrimaryGoalPageState extends State<PrimaryGoalPage> {
   int? selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.saveInput.primaryGoalIndex;
+  }
 
   final List<Map<String, String>> goals = [
     {
@@ -49,11 +57,26 @@ class _PrimaryGoalPageState extends State<PrimaryGoalPage> {
       return;
     }
 
+    final updatedData = widget.saveInput.copyWith(
+      primaryGoalIndex: selectedIndex,
+    );
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const BodyAndTargetsPage(),
+        builder: (context) => BodyAndTargetsPage(saveInput: updatedData),
       ),
+    );
+  }
+
+  void _onBack() {
+    final updatedData = widget.saveInput.copyWith(
+      primaryGoalIndex: selectedIndex,
+    );
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const CreateAccountPage()),
     );
   }
 
@@ -95,14 +118,7 @@ class _PrimaryGoalPageState extends State<PrimaryGoalPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CreateAccountPage(),
-                        ),
-                      );
-                    },
+                    onTap: _onBack,
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
                       width: 36,

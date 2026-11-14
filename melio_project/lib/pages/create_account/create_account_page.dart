@@ -8,6 +8,7 @@ import "package:firebase_auth/firebase_auth.dart";
 import '../services/account_authentication.dart';
 import '../home/home_page.dart';
 import '../create_account/primary_goal_page.dart';
+import 'package:melio_project/models/save_input.dart';
 import 'package:melio_project/unit_test/validators.dart';
 
 class CreateAccountPage extends StatefulWidget {
@@ -248,7 +249,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const PrimaryGoalPage(),
+                              builder: (context) =>
+                                  PrimaryGoalPage(saveInput: SaveInput()),
                             ),
                           );
                         },

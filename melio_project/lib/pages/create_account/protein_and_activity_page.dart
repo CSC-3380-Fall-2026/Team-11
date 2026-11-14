@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:melio_project/models/save_input.dart';
 import 'body_and_targets_page.dart';
 
 class ProteinAndActivityPage extends StatefulWidget {
-  const ProteinAndActivityPage({super.key});
+  final SaveInput saveInput;
+
+  const ProteinAndActivityPage({super.key, required this.saveInput});
 
   @override
   State<ProteinAndActivityPage> createState() => _ProteinAndActivityPageState();
@@ -14,7 +17,12 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
   String? _selectedActivityLevel;
 
   final List<String> _proteinOptions = [
-    '100g', '120g', '140g', '160g', '180g', '200g'
+    '100g',
+    '120g',
+    '140g',
+    '160g',
+    '180g',
+    '200g',
   ];
 
   final List<Map<String, String>> _activityOptions = [
@@ -41,7 +49,21 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
   ];
 
   bool get _isFormValid =>
-  _selectedProtein != null && _selectedActivityLevel != null;
+      _selectedProtein != null && _selectedActivityLevel != null;
+
+  void _onBack() {
+    final updatedData = widget.saveInput.copyWith(
+      proteinTarget: _selectedProtein,
+      activityLevel: _selectedActivityLevel,
+    );
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BodyAndTargetsPage(saveInput: updatedData),
+      ),
+    );
+  }
 
   void _onLetsGo() {
     if (!_isFormValid) {
@@ -52,6 +74,11 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
       );
       return;
     }
+
+    final finalData = widget.saveInput.copyWith(
+      proteinTarget: _selectedProtein,
+      activityLevel: _selectedActivityLevel,
+    );
   }
 
   Widget _buildDot({required bool isActive, bool isWide = false}) {
@@ -59,7 +86,7 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
       width: isWide ? 23 : 8,
       height: 8,
       decoration: BoxDecoration(
-        color: isActive? const Color(0xFF5FBF9B) : const Color(0xFFA8E6CF),
+        color: isActive ? const Color(0xFF5FBF9B) : const Color(0xFFA8E6CF),
         borderRadius: BorderRadius.circular(4),
       ),
     );
@@ -81,14 +108,7 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BodyAndTargetsPage(),
-                        ),
-                      );
-                    },
+                    onTap: _onBack, // 3. Hooked up to save state on back click
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
                       width: 36,
@@ -96,7 +116,7 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: const Color(0xFFE4E4E7),
-                          width: 1.2
+                          width: 1.2,
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -201,15 +221,15 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: isSelected
-                                ? const Color(0xFFFFF8EE)
-                                : const Color(0xFFF7F7F9),
+                                    ? const Color(0xFFFFF8EE)
+                                    : const Color(0xFFF7F7F9),
                                 borderRadius: BorderRadius.circular(24),
                                 border: Border.all(
                                   color: isSelected
-                                  ? const Color(0xFFD48806)
-                                  : const Color(0xFF2D3142),
+                                      ? const Color(0xFFD48806)
+                                      : const Color(0xFF2D3142),
                                 ),
-                              ) ,
+                              ),
                               child: Text(
                                 protein,
                                 style: GoogleFonts.inter(
@@ -228,14 +248,16 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
 
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFFFBE6),
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: const Color(0xFFFFEE99),
-                              width: 1,
-                            ),
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFFBE6),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: const Color(0xFFFFEE99),
+                            width: 1,
+                          ),
                         ),
                         child: Row(
                           children: [
@@ -268,7 +290,7 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
 
                       ..._activityOptions.map((activity) {
                         final isSelected =
-                        _selectedActivityLevel == activity["title"];
+                            _selectedActivityLevel == activity["title"];
                         return InkWell(
                           onTap: () {
                             setState(() {
@@ -284,15 +306,15 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: isSelected
-                                ? const Color(0xFF4E8D79)
-                                : const Color(0xFFE4E4E7),
+                                    ? const Color(0xFF4E8D79)
+                                    : const Color(0xFFE4E4E7),
                                 width: isSelected ? 1.5 : 1.0,
                               ),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.02),
                                   blurRadius: 8,
-                                  offset: const Offset(0,2),
+                                  offset: const Offset(0, 2),
                                 ),
                               ],
                             ),
@@ -315,7 +337,7 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         activity["title"]!,
@@ -343,22 +365,22 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
                                     shape: BoxShape.circle,
                                     border: Border.all(
                                       color: isSelected
-                                      ? const Color(0xFF2D3142)
-                                      : const Color(0xFFD1D1D6),
+                                          ? const Color(0xFF2D3142)
+                                          : const Color(0xFFD1D1D6),
                                       width: 2,
                                     ),
                                   ),
                                   alignment: Alignment.center,
                                   child: isSelected
-                                  ? Container(
-                                    width: 10,
-                                    height: 10,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF2D3142),
-                                    ),
-                                  )
-                                  : null,
+                                      ? Container(
+                                          width: 10,
+                                          height: 10,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xFF2D3142),
+                                          ),
+                                        )
+                                      : null,
                                 ),
                               ],
                             ),
@@ -390,8 +412,8 @@ class _ProteinAndActivityPageState extends State<ProteinAndActivityPage> {
                         "Let's go! 🎉",
                         style: GoogleFonts.inter(
                           color: _isFormValid
-                          ? Colors.white
-                          : const Color(0xFF8C90AB),
+                              ? Colors.white
+                              : const Color(0xFF8C90AB),
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
