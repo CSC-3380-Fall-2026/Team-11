@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:melio_project/models/save_input.dart';
 import 'primary_goal_page.dart';
+import 'protein_and_activity_page.dart';
 
 class BodyAndTargetsPage extends StatefulWidget {
-  const BodyAndTargetsPage({super.key});
+  final SaveInput saveInput;
+
+  const BodyAndTargetsPage({super.key, required this.saveInput});
 
   @override
   State<BodyAndTargetsPage> createState() => _BodyAndTargetsPageState();
 }
 
 class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
-  final TextEditingController _currentWeightController =
-      TextEditingController();
-  final TextEditingController _targetWeightController = TextEditingController();
-  final TextEditingController _calorieGoalController = TextEditingController();
+  late TextEditingController _currentWeightController = TextEditingController();
+  late TextEditingController _targetWeightController = TextEditingController();
+  late TextEditingController _calorieGoalController = TextEditingController();
 
   bool _isFormValid = false;
   String? _selectedQuickPick;
@@ -21,6 +24,18 @@ class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
   @override
   void initState() {
     super.initState();
+    _currentWeightController = TextEditingController(
+      text: widget.saveInput.currentWeight,
+    );
+    _targetWeightController = TextEditingController(
+      text: widget.saveInput.targetWeight,
+    );
+    _calorieGoalController = TextEditingController(
+      text: widget.saveInput.calorieGoal,
+    );
+
+    _validateForm();
+
     _currentWeightController.addListener(_validateForm);
     _targetWeightController.addListener(_validateForm);
     _calorieGoalController.addListener(_validateForm);
@@ -52,6 +67,7 @@ class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
       _selectedQuickPick = value;
       _calorieGoalController.text = value.replaceAll('  kcal', '');
     });
+    _validateForm();
   }
 
   void _onContinue() {
@@ -63,6 +79,19 @@ class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
       );
       return;
     }
+
+    final updatedData = widget.saveInput.copyWith(
+      currentWeight: _currentWeightController.text,
+      targetWeight: _targetWeightController.text,
+      calorieGoal: _calorieGoalController.text,
+    );
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProteinAndActivityPage(saveInput: updatedData),
+      ),
+    );
   }
 
   Widget _buildDot({required DotStatus status}) {
@@ -107,7 +136,13 @@ class _BodyAndTargetsPageState extends State<BodyAndTargetsPage> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const PrimaryGoalPage(),
+                          builder: (context) => PrimaryGoalPage(
+                            saveInput: widget.saveInput.copyWith(
+                              currentWeight: _currentWeightController.text,
+                              targetWeight: _targetWeightController.text,
+                              calorieGoal: _calorieGoalController.text,
+                            ),
+                          ),
                         ),
                       );
                     },
