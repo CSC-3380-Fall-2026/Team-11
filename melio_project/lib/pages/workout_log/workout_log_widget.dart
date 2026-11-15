@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:melio_project/pages/workout_log/workout_service.dart";
 import "package:melio_project/pages/workout_log/workout_model.dart";
+import "package:melio_project/pages/workout_log/active_workout_page.dart";
 
 const _textDark = Color(0xFF1E252D);
 const _textMuted = Color(0xFF7A8699);
@@ -196,6 +197,13 @@ class TodaysWorkoutWidget extends StatelessWidget {
               //mint button to start the workout 
               ElevatedButton(
                 onPressed: () {
+                  //links to active workout
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ActiveWorkoutPage(routine: routine),
+                    ),
+                  );
                   if (onStartWorkout != null) {
                     onStartWorkout!(routine);
                   }
