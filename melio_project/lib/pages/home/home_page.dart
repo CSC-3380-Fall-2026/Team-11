@@ -35,31 +35,40 @@ class HomePage extends StatelessWidget {
           ListView(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
             children: [
-              TodaysWorkoutWidget(onAddWorkout: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AddDataPage()),
-                );
-              },
-              onSeeAll: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const WorkoutLogPage()),
-                );
-              },
-              onStartWorkout: (workoutDoc) {
-                // Handle starting a workout
-              }
-            ),
-            const SizedBox(height: 16),
-            CalendarWidget(onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CalendarPage()),
-              );
-            }),
-            //PLACE HOLDER FOR OTHER WIDGETS IN THE HOME PAGE
-            //Add other widgets here as needed
+              TodaysWorkoutWidget(
+                onAddWorkout: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AddDataPage(),
+                    ),
+                  );
+                },
+                onSeeAll: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WorkoutLogPage(),
+                    ),
+                  );
+                },
+                onStartWorkout: (workoutDoc) {
+                  // Handle starting a workout
+                },
+              ),
+              const SizedBox(height: 16),
+              CalendarWidget(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CalendarPage(),
+                    ),
+                  );
+                },
+              ),
+              //PLACE HOLDER FOR OTHER WIDGETS IN THE HOME PAGE
+              //Add other widgets here as needed
             ],
           ),
           Positioned(
@@ -153,7 +162,18 @@ class HomePage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
+              IconButton(
+                icon: const Icon(Icons.calendar_month),
+                 onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CalendarPage(),
+                    ),
+                  );
+                 },
+              ),
+
               IconButton(
                 icon: const Icon(Icons.fitness_center_rounded),
                 onPressed: () {
@@ -166,8 +186,10 @@ class HomePage extends StatelessWidget {
                 },
               ),
 
-              const SizedBox(width: 140), // space for the plus button
+              const SizedBox(width: 140),
+               // space for the plus button
               IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
+
               IconButton(
                 icon: const Icon(Icons.account_circle),
                 onPressed: () {
