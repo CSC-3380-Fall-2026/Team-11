@@ -7,6 +7,7 @@ import "package:melio_project/pages/calendar/calendar_widget.dart";
 import "package:melio_project/pages/profile/profile_page.dart";
 import "package:melio_project/pages/workout_log/workout_log_page.dart";
 import "package:melio_project/pages/workout_log/workout_log_widget.dart";
+import "package:melio_project/pages/map/map.dart";
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -164,14 +165,14 @@ class HomePage extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.calendar_month),
-                 onPressed: () {
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const CalendarPage(),
                     ),
                   );
-                 },
+                },
               ),
 
               IconButton(
@@ -187,8 +188,18 @@ class HomePage extends StatelessWidget {
               ),
 
               const SizedBox(width: 140),
-               // space for the plus button
-              IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
+              // space for the plus button
+              IconButton(
+                icon: const Icon(Icons.map_rounded),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MapSearchScreen(),
+                    ),
+                  );
+                },
+              ),
 
               IconButton(
                 icon: const Icon(Icons.account_circle),
