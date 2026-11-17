@@ -3,7 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:melio_project/pages/chatbot/chatbot_theme.dart';
 
 class EditProfilePage extends StatelessWidget {
-  const EditProfilePage({super.key});
+  
+  final String? currentName;
+  final String? currentUsername;
+  final String? currentBio;
+
+  const EditProfilePage({
+    super.key,
+    this.currentName,
+    this.currentUsername,
+    this.currentBio,
+  });
 
   void _save() {
     // Save action
