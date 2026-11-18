@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import "package:melio_project/pages/workout_log/workout_model.dart";
+import "package:melio_project/pages/workout_log/workout_service.dart";
 
 //class tracks live workout session
 class SetLog {
@@ -142,9 +143,13 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
           child: const Text("Resume"),
         ),
         FilledButton(
-          onPressed:() {
-            Navigator.pop(context);//close dialog
-            Navigator.pop(context);//close active workout screen
+          onPressed:() async {
+            //record the workout completion and update streak in Firestore
+            await WorkoutService().recordWorkoutCompletion();
+            if (context.mounted){ 
+              Navigator.pop(context);//close dialog
+              Navigator.pop(context);//close active workout screen
+            }
           },
           child: const Text("Save & Exit"),
         ),

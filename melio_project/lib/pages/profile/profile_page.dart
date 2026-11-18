@@ -5,14 +5,27 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import "package:melio_project/pages/chatbot/chatbot_theme.dart";
 import "package:melio_project/pages/profile/settings_page.dart";
 import "package:melio_project/pages/profile/edit_profile_page.dart";
+import "package:melio_project/pages/workout_log/workout_service.dart";
 
 typedef T = ChatBotTheme;
 
 const _dark = Color(0xFF2B2833);
 const _muted = Color(0xFF7A7685);
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    //checks for missed workouts to update streak
+    WorkoutService().getVerifiedStreak();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +38,24 @@ class ProfilePage extends StatelessWidget {
       );
     }
 
-    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      future: FirebaseFirestore.instance
+    //calculate member since year 
+    final creationDate = currentUser.metadata.creationTime ?? DateTime.now();
+    const monthsUpper = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 
+    'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+
+    final memberSince = '${monthsUpper[creationDate.month -1]} ${creationDate.year}';
+
+    const monthsTitle = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 
+    'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+
+    final currentMonthName = monthsTitle[DateTime.now().month - 1];    
+
+    //streambuilder keeps profile updated in realtime
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+      stream: FirebaseFirestore.instance
           .collection('users')
           .doc(currentUser.uid)
-          .get(),
+          .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
@@ -38,6 +64,8 @@ class ProfilePage extends StatelessWidget {
         }
 
         final data = snapshot.data?.data() ?? {};
+
+        //profile info
         final String name =
             data['fullName'] ?? currentUser.displayName ?? "No Name";
         final String rawUsername = data['username'] ?? "username";
@@ -45,6 +73,13 @@ class ProfilePage extends StatelessWidget {
             ? rawUsername
             : '@$rawUsername';
         final String? photoUrl = data['photoUrl'] ?? currentUser.photoURL;
+        final String bio = data['bio'] ?? "No bio yet. Tap 'Edit Profile' to add one!";
+
+        //real stats
+        final String totalWorkouts = (data['totalWorkouts'] ?? 0).toString();
+        final String longestStreak = (data['longestStreak'] ?? 0).toString();
+        final String avgWorkoutTime = (data['avgWorkoutTime'] ?? 0).toString();
+        final int currentStreak = (data['currentStreak'] as num?)?.toInt() ?? 0;
 
         return Theme(
           data: ThemeData(
@@ -112,7 +147,11 @@ class ProfilePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const EditProfilePage(),
+                            builder: (context) => EditProfilePage(
+                              currentName: name,
+                              currentUsername : rawUsername,
+                              currentBio : data['bio'] ?? '',
+                            ),
                           ),
                         );
                       },
@@ -138,12 +177,12 @@ class ProfilePage extends StatelessWidget {
                 ),
                 Text(username, style: const TextStyle(color: _muted)),
                 const SizedBox(height: 10),
-                const Row(
+                Row(
                   children: [
                     Icon(Icons.north_east, size: 12),
                     SizedBox(width: 6),
                     Text(
-                      'MEMBER SINCE 2XXX',
+                      'MEMBER SINCE $memberSince',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
@@ -153,32 +192,32 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
 
-                // Bio
+                // Dynamic Bio
                 const SizedBox(height: 20),
-                const Text(
-                  'Bio goes here.........................................................',
+                Text(
+                 bio,
                   style: TextStyle(fontSize: 14, color: _muted),
                 ),
 
                 const Divider(height: 48),
 
                 // Stats
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('My Stats', style: TextStyle(fontSize: 20)),
-                    Text('October ↗', style: TextStyle(fontSize: 12)),
+                    Text('$currentMonthName ↗', style: TextStyle(fontSize: 12)),
                   ],
                 ),
                 const SizedBox(height: 20),
-                const IntrinsicHeight(
+                IntrinsicHeight(
                   child: Row(
                     children: [
-                      Expanded(child: Stat('150', '', 'Workouts')),
+                      Expanded(child: Stat(totalWorkouts, '', 'Workouts')),
                       VerticalDivider(),
-                      Expanded(child: Stat('10', ' weeks', 'Longest Streak')),
+                      Expanded(child: Stat(longestStreak, ' weeks', 'Longest Streak')),
                       VerticalDivider(),
-                      Expanded(child: Stat('2', ' hours', 'Avg Workout Time')),
+                      Expanded(child: Stat(avgWorkoutTime, ' hours', 'Avg Workout Time')),
                     ],
                   ),
                 ),
@@ -188,7 +227,7 @@ class ProfilePage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: T.lavender.withOpacity(0.2),
+                    color: T.lavender.withValues(alpha: 0.2),
                     border: Border.all(color: T.lavender),
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -196,45 +235,58 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       const Icon(Icons.local_fire_department_outlined),
                       const SizedBox(width: 9),
-                      const Expanded(
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Current Streak',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              'Showing up looks good on you.',
-                              style: TextStyle(fontSize: 11, color: _muted),
+                              currentStreak > 0 
+                                ? 'Showing up looks good on you.'
+                                : 'Missed a workout! Complete your next session to start a streak.',
+                              style: const TextStyle(fontSize: 11, color: _muted),
                             ),
                           ],
                         ),
                       ),
-                      for (var i = 0; i < 3; i++)
-                        const Padding(
-                          padding: EdgeInsets.only(left: 5),
-                          child: CircleAvatar(
-                            radius: 12,
-                            backgroundColor: T.lavender,
-                            child: Icon(
-                              Icons.check,
-                              size: 13,
-                              color: T.textLight,
+
+                      
+                      if (currentStreak > 0)
+                        for (var i = 0; i < 3; i++)
+                          const Padding(
+                            padding: EdgeInsets.only(left: 5),
+                            child: CircleAvatar(
+                              radius: 12,
+                              backgroundColor: T.lavender,
+                              child: Icon(
+                                Icons.check,
+                                size: 13,
+                                color: T.textLight,
+                              ),
+                            ),
+                          )
+                        else 
+                          const Padding(
+                            padding: EdgeInsets.only(left: 4),
+                            child: Text(
+                              "0 days",
+                              style: TextStyle( 
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: _muted,
+                              ),
                             ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    }
   }
-}
 
 class Stat extends StatelessWidget {
   const Stat(this.value, this.unit, this.label, {super.key});
