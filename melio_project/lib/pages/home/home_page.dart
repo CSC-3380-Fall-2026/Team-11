@@ -8,6 +8,7 @@ import "package:melio_project/pages/profile/profile_page.dart";
 import "package:melio_project/pages/workout_log/workout_log_page.dart";
 import "package:melio_project/pages/workout_log/workout_log_widget.dart";
 import "package:melio_project/pages/map/map.dart";
+import "package:melio_project/pages/nutrition_log/nutrition_page.dart";
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -164,12 +165,13 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                icon: const Icon(Icons.calendar_month),
+                icon: const Icon(Icons.flatware_rounded),
+                tooltip: 'Nutrition & Meals',
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CalendarPage(),
+                      builder: (context) => const NutritionPage(),
                     ),
                   );
                 },
