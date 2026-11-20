@@ -11,10 +11,7 @@ class WorkoutLogPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Workouts'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('My Workouts'), centerTitle: true),
       // The "+ New Routine" button that opens your creator screen
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -55,7 +52,9 @@ class WorkoutLogPage extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       'No Routines Yet',
-                      style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -71,7 +70,12 @@ class WorkoutLogPage extends StatelessWidget {
 
           // List of saved workout routines
           return ListView.builder(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 80),
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: 80,
+            ),
             itemCount: routines.length,
             itemBuilder: (context, index) {
               final routine = routines[index];
@@ -79,16 +83,24 @@ class WorkoutLogPage extends StatelessWidget {
               return Card(
                 elevation: 2,
                 margin: const EdgeInsets.only(bottom: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(16),
                   leading: CircleAvatar(
                     backgroundColor: theme.colorScheme.primaryContainer,
-                    child: Icon(Icons.fitness_center, color: theme.colorScheme.onPrimaryContainer),
+                    child: Icon(
+                      Icons.fitness_center,
+                      color: theme.colorScheme.onPrimaryContainer,
+                    ),
                   ),
                   title: Text(
                     routine.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,14 +116,20 @@ class WorkoutLogPage extends StatelessWidget {
                         spacing: 4,
                         children: routine.scheduledDays.map((day) {
                           return Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.surfaceVariant,
+                              color: theme.colorScheme.surfaceContainerHighest,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
                               day.substring(0, 3), // e.g. Mon, Wed
-                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           );
                         }).toList(),
@@ -125,7 +143,8 @@ class WorkoutLogPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CreateRoutinePage(routine: routine),
+                            builder: (context) =>
+                                CreateRoutinePage(routine: routine),
                           ),
                         );
                       } else if (value == 'delete') {
@@ -149,7 +168,11 @@ class WorkoutLogPage extends StatelessWidget {
                         value: 'delete',
                         child: Row(
                           children: [
-                            Icon(Icons.delete_outline, size: 20, color: Colors.red),
+                            Icon(
+                              Icons.delete_outline,
+                              size: 20,
+                              color: Colors.red,
+                            ),
                             SizedBox(width: 8),
                             Text('Delete', style: TextStyle(color: Colors.red)),
                           ],

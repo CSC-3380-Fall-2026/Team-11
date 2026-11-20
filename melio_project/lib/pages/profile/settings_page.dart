@@ -106,7 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     label: 'Appearance Mode',
                     trailing: Switch(
                       value: _darkMode,
-                      activeColor: ChatBotTheme.lavender,
+                      activeThumbColor: ChatBotTheme.lavender,
                       onChanged: (v) => setState(() => _darkMode = v),
                     ),
                     onTap: () => setState(() => _darkMode = !_darkMode),

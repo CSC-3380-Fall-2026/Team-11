@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 //direct free sdk for generative ai
 import 'package:flutter_dotenv/flutter_dotenv.dart';

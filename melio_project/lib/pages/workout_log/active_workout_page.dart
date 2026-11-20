@@ -7,16 +7,15 @@ import "package:melio_project/pages/workout_log/workout_service.dart";
 class SetLog {
   int setNumber = 1;
   int reps = 10;
-  double weight = 0.0;  
+  double weight = 0.0;
   bool isCompleted = false;
 
-
-SetLog({
-  this.setNumber = 1,
-  this.reps = 10,
-  this.weight = 0.0,
-  this.isCompleted = false,
-});
+  SetLog({
+    this.setNumber = 1,
+    this.reps = 10,
+    this.weight = 0.0,
+    this.isCompleted = false,
+  });
 }
 
 class ActiveWorkoutPage extends StatefulWidget {
@@ -29,7 +28,6 @@ class ActiveWorkoutPage extends StatefulWidget {
 }
 
 class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
-  
   late Stopwatch stopwatch;
   late Timer timer;
   String _elapsedTimeString = "00:00";
@@ -50,21 +48,20 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
       }
     });
 
-
-    _exerciseSets = widget.routine.exercises.map((exercise){
+    _exerciseSets = widget.routine.exercises.map((exercise) {
       return List.generate(exercise.sets, (index) {
         return SetLog(
           setNumber: index + 1,
           reps: exercise.reps,
           weight: exercise.weight ?? 0.0,
         );
-      }); 
+      });
     }).toList();
   }
 
   @override
   void dispose() {
-    timer?.cancel();
+    timer.cancel();
     stopwatch.stop();
     super.dispose();
   }
@@ -73,9 +70,9 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
     String twoDigits(int n) => n.toString().padLeft(2, "0");
     final minutes = twoDigits(duration.inMinutes.remainder(60));
     final seconds = twoDigits(duration.inSeconds.remainder(60));
-      if (duration.inHours > 0) {
-        return '${twoDigits(duration.inHours)}:$minutes:$seconds';
-      } 
+    if (duration.inHours > 0) {
+      return '${twoDigits(duration.inHours)}:$minutes:$seconds';
+    }
     return '$minutes:$seconds';
   }
 
@@ -95,71 +92,77 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
     return count;
   }
 
-  void _finishWorkout(){
+  void _finishWorkout() {
     stopwatch.stop();
 
     showDialog(
-      context: context, 
+      context: context,
       barrierDismissible: false,
-      builder : (context) =>  AlertDialog(
+      builder: (context) => AlertDialog(
         title: const Row(
           children: [
             Icon(Icons.emoji_events, color: Colors.amber),
-            SizedBox(width:8),
+            SizedBox(width: 8),
             Text("Workout Finished!"),
           ],
         ),
         content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Great job on finishing ${widget.routine.name}!"),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              const SizedBox (width: 6),
-              Text("Total Time: $_elapsedTimeString",
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            ],
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Great job on finishing ${widget.routine.name}!"),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                const SizedBox(width: 6),
+                Text(
+                  "Total Time: $_elapsedTimeString",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                const Icon(
+                  Icons.check_circle_outline,
+                  size: 20,
+                  color: Colors.green,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  "Sets Completed: $totalCompletedSets/$totalPlannedSets",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); //close dialog
+              stopwatch.start(); //resume stopwatch
+            },
+            child: const Text("Resume"),
           ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              const Icon(Icons.check_circle_outline, size: 20, color: Colors.green),
-              const SizedBox(width: 6),
-              Text("Sets Completed: $totalCompletedSets/$totalPlannedSets",
-              style: const TextStyle(fontWeight: FontWeight.bold)
-              ),
-            ],
+          FilledButton(
+            onPressed: () async {
+              //record the workout completion and update streak in Firestore
+              await WorkoutService().recordWorkoutCompletion();
+              if (context.mounted) {
+                Navigator.pop(context); //close dialog
+                Navigator.pop(context); //close active workout screen
+              }
+            },
+            child: const Text("Save & Exit"),
           ),
         ],
-      ), 
-      actions : [
-        TextButton(
-          onPressed:(){
-            Navigator.pop(context);//close dialog
-            stopwatch.start();//resume stopwatch
-          },
-          child: const Text("Resume"),
-        ),
-        FilledButton(
-          onPressed:() async {
-            //record the workout completion and update streak in Firestore
-            await WorkoutService().recordWorkoutCompletion();
-            if (context.mounted){ 
-              Navigator.pop(context);//close dialog
-              Navigator.pop(context);//close active workout screen
-            }
-          },
-          child: const Text("Save & Exit"),
-        ),
-      ],
-    ),
-    ); 
+      ),
+    );
   }
 
-
-@override
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
@@ -167,7 +170,10 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
       appBar: AppBar(
         title: Column(
           children: [
-            Text(widget.routine.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              widget.routine.name,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             Text(
               _elapsedTimeString,
               style: TextStyle(
@@ -198,7 +204,9 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
 
           return Card(
             margin: const EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             elevation: 2,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -218,10 +226,54 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
                   // Table header
                   const Row(
                     children: [
-                      SizedBox(width: 40, child: Text("SET", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 12))),
-                      Expanded(child: Center(child: Text("WEIGHT", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 12)))),
-                      Expanded(child: Center(child: Text("REPS", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 12)))),
-                      SizedBox(width: 50, child: Center(child: Text("DONE", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 12)))),
+                      SizedBox(
+                        width: 40,
+                        child: Text(
+                          "SET",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            "WEIGHT",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            "REPS",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 50,
+                        child: Center(
+                          child: Text(
+                            "DONE",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const Divider(),
@@ -261,7 +313,9 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
                             child: Center(
                               child: Text(
                                 "${setLog.weight > 0 ? setLog.weight : '-'} lbs",
-                                style: const TextStyle(fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
@@ -271,7 +325,9 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
                             child: Center(
                               child: Text(
                                 "${setLog.reps}",
-                                style: const TextStyle(fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
@@ -284,7 +340,9 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
                                 setLog.isCompleted
                                     ? Icons.check_circle
                                     : Icons.check_circle_outline,
-                                color: setLog.isCompleted ? Colors.green : Colors.grey,
+                                color: setLog.isCompleted
+                                    ? Colors.green
+                                    : Colors.grey,
                               ),
                               onPressed: () {
                                 setState(() {
@@ -296,7 +354,7 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),
@@ -304,4 +362,5 @@ class _ActiveWorkoutPageState extends State<ActiveWorkoutPage> {
         },
       ),
     );
-  }  }
+  }
+}
