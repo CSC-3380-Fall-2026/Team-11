@@ -12,7 +12,8 @@ class NutritionPage extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (context) => _AddMealBottomSheet(defaultCategory: defaultCategory),
+      builder: (context) =>
+          _AddMealBottomSheet(defaultCategory: defaultCategory),
     );
   }
 
@@ -21,10 +22,7 @@ class NutritionPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Meals & Nutrition'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Meals & Nutrition'), centerTitle: true),
       body: StreamBuilder<DailyNutrition>(
         stream: NutritionService().streamDailyNutrition(),
         builder: (context, snapshot) {
@@ -41,8 +39,12 @@ class NutritionPage extends StatelessWidget {
               // Summary Banner Card
               Card(
                 elevation: 0,
-                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                color: theme.colorScheme.primaryContainer.withValues(
+                  alpha: 0.4,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
@@ -55,12 +57,13 @@ class NutritionPage extends StatelessWidget {
                       ),
                       _SummaryItem(
                         title: 'Remaining',
-                        value: '${daily.remainingCalories > 0 ? daily.remainingCalories : 0}',
+                        value:
+                            '${daily.remainingCalories > 0 ? daily.remainingCalories : 0}',
                         unit: 'kcal',
                       ),
                       _SummaryItem(
                         title: 'Protein',
-                        value: '${daily.totalProtein.toStringAsFixed(0)}',
+                        value: daily.totalProtein.toStringAsFixed(0),
                         unit: 'g',
                       ),
                     ],
@@ -71,15 +74,20 @@ class NutritionPage extends StatelessWidget {
 
               // Meal Sections: Breakfast, Lunch, Dinner, Snack
               ...categories.map((category) {
-                final categoryMeals =
-                    daily.meals.where((m) => m.mealType == category).toList();
-                final categoryCalories =
-                    categoryMeals.fold(0, (sum, m) => sum + m.calories);
+                final categoryMeals = daily.meals
+                    .where((m) => m.mealType == category)
+                    .toList();
+                final categoryCalories = categoryMeals.fold(
+                  0,
+                  (sum, m) => sum + m.calories,
+                );
 
                 return Card(
                   elevation: 2,
                   margin: const EdgeInsets.only(bottom: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
@@ -101,13 +109,20 @@ class NutritionPage extends StatelessWidget {
                                 ),
                                 Text(
                                   '$categoryCalories kcal',
-                                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                  ),
                                 ),
                               ],
                             ),
                             IconButton(
-                              onPressed: () => _showAddMealSheet(context, category),
-                              icon: const Icon(Icons.add_circle_outline, color: Colors.blue),
+                              onPressed: () =>
+                                  _showAddMealSheet(context, category),
+                              icon: const Icon(
+                                Icons.add_circle_outline,
+                                color: Colors.blue,
+                              ),
                               tooltip: 'Add $category',
                             ),
                           ],
@@ -120,7 +135,10 @@ class NutritionPage extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
                               'No food logged yet. Tap + to add.',
-                              style: TextStyle(color: Colors.grey[400], fontSize: 13),
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 13,
+                              ),
                             ),
                           )
                         else
@@ -129,14 +147,23 @@ class NutritionPage extends StatelessWidget {
                               contentPadding: EdgeInsets.zero,
                               title: Text(
                                 meal.name,
-                                style: const TextStyle(fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                               subtitle: Text(
                                 '${meal.calories} kcal • P: ${meal.protein.toStringAsFixed(0)}g  C: ${meal.carbs.toStringAsFixed(0)}g  F: ${meal.fat.toStringAsFixed(0)}g',
-                                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
                               ),
                               trailing: IconButton(
-                                icon: const Icon(Icons.delete_outline, size: 20, color: Colors.red),
+                                icon: const Icon(
+                                  Icons.delete_outline,
+                                  size: 20,
+                                  color: Colors.red,
+                                ),
                                 onPressed: () async {
                                   await NutritionService().deleteMeal(meal.id);
                                 },
@@ -182,7 +209,10 @@ class _SummaryItem extends StatelessWidget {
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 2),
-            Text(unit, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+            Text(
+              unit,
+              style: const TextStyle(fontSize: 11, color: Colors.grey),
+            ),
           ],
         ),
       ],
@@ -263,7 +293,9 @@ class _AddMealBottomSheetState extends State<_AddMealBottomSheet> {
                 children: [
                   Text(
                     'Log Food',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   DropdownButton<String>(
                     value: _selectedCategory,
@@ -285,7 +317,9 @@ class _AddMealBottomSheetState extends State<_AddMealBottomSheet> {
                   hintText: 'e.g. Oatmeal, Grilled Chicken',
                   border: OutlineInputBorder(),
                 ),
-                validator: (val) => val == null || val.trim().isEmpty ? 'Enter food name' : null,
+                validator: (val) => val == null || val.trim().isEmpty
+                    ? 'Enter food name'
+                    : null,
               ),
               const SizedBox(height: 12),
 
@@ -296,7 +330,8 @@ class _AddMealBottomSheetState extends State<_AddMealBottomSheet> {
                   labelText: 'Calories (kcal)',
                   border: OutlineInputBorder(),
                 ),
-                validator: (val) => val == null || val.trim().isEmpty ? 'Enter calories' : null,
+                validator: (val) =>
+                    val == null || val.trim().isEmpty ? 'Enter calories' : null,
               ),
               const SizedBox(height: 12),
 
@@ -343,7 +378,10 @@ class _AddMealBottomSheetState extends State<_AddMealBottomSheet> {
                 height: 48,
                 child: FilledButton(
                   onPressed: _saveMeal,
-                  child: const Text('Add to Log', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text(
+                    'Add to Log',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ],
