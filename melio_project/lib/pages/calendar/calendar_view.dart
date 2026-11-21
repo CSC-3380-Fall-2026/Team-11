@@ -1,6 +1,8 @@
 import "dart:async";
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
+import "package:melio_project/pages/nutrition_log/nutrition_model.dart";
+import "package:melio_project/pages/nutrition_log/nutrition_service.dart";
 import "package:melio_project/pages/services/calendar_plan.dart";
 import "package:melio_project/pages/workout_log/workout_model.dart";
 import "package:melio_project/pages/workout_log/workout_service.dart";
@@ -42,17 +44,21 @@ class _CalendarViewState extends State<CalendarView> {
     "Sunday",
   ];
 
-  // one-time plans on a single date, nothing adds to this yet
+  // things on one exact date, right now these are the meals from the nutrition log
   final List<CalendarPlan> plans = [];
 
   // the user's saved workout routines, these repeat every week
   List<WorkoutRoutine> routines = [];
   StreamSubscription<List<WorkoutRoutine>>? routineListener;
 
+  // one listener for each day of the week being shown
+  List<StreamSubscription<DailyNutrition>> mealListeners = [];
+
   @override
   void initState() {
     super.initState();
     goToToday();
+    listenToMeals();
 
     // keeps the calendar updated whenever a routine is added, edited, or deleted
     routineListener = WorkoutService().getWorkoutsStream().listen((saved) {
@@ -65,7 +71,47 @@ class _CalendarViewState extends State<CalendarView> {
   @override
   void dispose() {
     routineListener?.cancel();
+    for (var listener in mealListeners) {
+      listener.cancel();
+    }
     super.dispose();
+  }
+
+  // gets the meals logged on each day of the week being shown
+  void listenToMeals() {
+    for (var listener in mealListeners) {
+      listener.cancel();
+    }
+    mealListeners = [];
+
+    for (int i = 0; i < 7; i++) {
+      DateTime day = DateTime(
+        weekStart.year,
+        weekStart.month,
+        weekStart.day + i,
+      );
+      var dayStream = NutritionService().streamDailyNutrition(day);
+      var listener = dayStream.listen((daily) {
+        setState(() {
+          // clear this day's old meals first so they don't show up twice
+          plans.removeWhere(
+            (plan) => plan.type == "meal" && isSameDay(plan.date, day),
+          );
+          for (var meal in daily.meals) {
+            plans.add(
+              CalendarPlan(
+                title: meal.name,
+                time: "${meal.mealType} · ${meal.calories} cal",
+                type: "meal",
+                date: day,
+                completed: true,
+              ),
+            );
+          }
+        });
+      });
+      mealListeners.add(listener);
+    }
   }
 
   void goToToday() {
@@ -93,6 +139,7 @@ class _CalendarViewState extends State<CalendarView> {
         selectedDay.day + days,
       );
     });
+    listenToMeals();
   }
 
   bool isSameDay(DateTime a, DateTime b) {
@@ -185,7 +232,10 @@ class _CalendarViewState extends State<CalendarView> {
             weekButton(Icons.chevron_left, () => changeWeek(-7)),
             const SizedBox(width: 8),
             OutlinedButton(
-              onPressed: () => setState(() => goToToday()),
+              onPressed: () {
+                setState(() => goToToday());
+                listenToMeals();
+              },
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.white,
                 side: BorderSide(color: Colors.grey.shade300),
