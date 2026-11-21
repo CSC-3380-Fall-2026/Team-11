@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'nutrition_model.dart';
 import 'nutrition_service.dart';
+import 'package:melio_project/pages/recipe_page/recipe_page.dart';
 
 class NutritionPage extends StatelessWidget {
   const NutritionPage({super.key});
@@ -22,7 +23,22 @@ class NutritionPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Meals & Nutrition'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Meals & Nutrition'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu_book_outlined),
+            tooltip: 'Recipes',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const RecipePage()),
+              );
+            },
+          ),
+        ],
+      ),
       body: StreamBuilder<DailyNutrition>(
         stream: NutritionService().streamDailyNutrition(),
         builder: (context, snapshot) {
