@@ -37,6 +37,25 @@ class _ProfilePageState extends State<ProfilePage> {
         body: const Center(child: Text("No user is currently logged in.")),
       );
     }
+    //user sign out (button)
+    void signUserOut() {
+      FirebaseAuth.instance.signOut();
+
+    }
+    Widget build(BuildContext context) {
+      return Scaffold( 
+        appBar: AppBar(actions: [ 
+        IconButton(
+          onPressed: signUserOut, 
+          icon: Icon(Icons. logout)
+          )
+      ],
+      ),
+      );
+    }
+
+
+
 
     //calculate member since year 
     final creationDate = currentUser.metadata.creationTime ?? DateTime.now();
