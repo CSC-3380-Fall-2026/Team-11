@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:melio_project/pages/chatbot/chatbot_theme.dart';
 
-class EditProfilePage extends StatelessWidget {
-  
+class EditProfilePage extends StatefulWidget {
   final String? currentName;
   final String? currentUsername;
   final String? currentBio;
@@ -15,8 +16,63 @@ class EditProfilePage extends StatelessWidget {
     this.currentBio,
   });
 
-  void _save() {
-    // Save action
+  @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  late final TextEditingController _nameController;
+  late final TextEditingController _bioController;
+  bool _saving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.currentName ?? '');
+    _bioController = TextEditingController(text: widget.currentBio ?? '');
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _bioController.dispose();
+    super.dispose();
+  }
+
+  void _save() async {
+    if (_saving) return;
+
+    final name = _nameController.text.trim();
+    final bio = _bioController.text.trim();
+
+    if (name.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Name cannot be empty')));
+      return;
+    }
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    setState(() => _saving = true);
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        'fullName': name,
+        'bio': bio,
+      }, SetOptions(merge: true));
+
+      await user.updateDisplayName(name);
+
+      if (mounted) Navigator.pop(context);
+    } catch (e) {
+      if (mounted) {
+        setState(() => _saving = false);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Could not save: $e')));
+      }
+    }
   }
 
   @override
@@ -89,6 +145,7 @@ class EditProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 3),
             TextField(
+              controller: _nameController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -103,6 +160,7 @@ class EditProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 3),
             TextField(
+              controller: _bioController,
               maxLines: 6,
               decoration: InputDecoration(
                 border: OutlineInputBorder(

@@ -38,17 +38,42 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
-    //calculate member since year 
+    //calculate member since year
     final creationDate = currentUser.metadata.creationTime ?? DateTime.now();
-    const monthsUpper = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 
-    'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+    const monthsUpper = [
+      'JANUARY',
+      'FEBRUARY',
+      'MARCH',
+      'APRIL',
+      'MAY',
+      'JUNE',
+      'JULY',
+      'AUGUST',
+      'SEPTEMBER',
+      'OCTOBER',
+      'NOVEMBER',
+      'DECEMBER',
+    ];
 
-    final memberSince = '${monthsUpper[creationDate.month -1]} ${creationDate.year}';
+    final memberSince =
+        '${monthsUpper[creationDate.month - 1]} ${creationDate.year}';
 
-    const monthsTitle = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 
-    'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+    const monthsTitle = [
+      'JANUARY',
+      'FEBRUARY',
+      'MARCH',
+      'APRIL',
+      'MAY',
+      'JUNE',
+      'JULY',
+      'AUGUST',
+      'SEPTEMBER',
+      'OCTOBER',
+      'NOVEMBER',
+      'DECEMBER',
+    ];
 
-    final currentMonthName = monthsTitle[DateTime.now().month - 1];    
+    final currentMonthName = monthsTitle[DateTime.now().month - 1];
 
     //streambuilder keeps profile updated in realtime
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
@@ -73,7 +98,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ? rawUsername
             : '@$rawUsername';
         final String? photoUrl = data['photoUrl'] ?? currentUser.photoURL;
-        final String bio = data['bio'] ?? "No bio yet. Tap 'Edit Profile' to add one!";
+        final String bio =
+            data['bio'] ?? "No bio yet. Tap 'Edit Profile' to add one!";
 
         //real stats
         final String totalWorkouts = (data['totalWorkouts'] ?? 0).toString();
@@ -149,8 +175,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           MaterialPageRoute(
                             builder: (context) => EditProfilePage(
                               currentName: name,
-                              currentUsername : rawUsername,
-                              currentBio : data['bio'] ?? '',
+                              currentUsername: rawUsername,
+                              currentBio: data['bio'] ?? '',
                             ),
                           ),
                         );
@@ -194,10 +220,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 // Dynamic Bio
                 const SizedBox(height: 20),
-                Text(
-                 bio,
-                  style: TextStyle(fontSize: 14, color: _muted),
-                ),
+                Text(bio, style: TextStyle(fontSize: 14, color: _muted)),
 
                 const Divider(height: 48),
 
@@ -215,9 +238,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       Expanded(child: Stat(totalWorkouts, '', 'Workouts')),
                       VerticalDivider(),
-                      Expanded(child: Stat(longestStreak, ' weeks', 'Longest Streak')),
+                      Expanded(
+                        child: Stat(longestStreak, ' weeks', 'Longest Streak'),
+                      ),
                       VerticalDivider(),
-                      Expanded(child: Stat(avgWorkoutTime, ' hours', 'Avg Workout Time')),
+                      Expanded(
+                        child: Stat(
+                          avgWorkoutTime,
+                          ' hours',
+                          'Avg Workout Time',
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -240,16 +271,18 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              currentStreak > 0 
-                                ? 'Showing up looks good on you.'
-                                : 'Missed a workout! Complete your next session to start a streak.',
-                              style: const TextStyle(fontSize: 11, color: _muted),
+                              currentStreak > 0
+                                  ? 'Showing up looks good on you.'
+                                  : 'Missed a workout! Complete your next session to start a streak.',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: _muted,
+                              ),
                             ),
                           ],
                         ),
                       ),
 
-                      
                       if (currentStreak > 0)
                         for (var i = 0; i < 3; i++)
                           const Padding(
@@ -264,29 +297,29 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                           )
-                        else 
-                          const Padding(
-                            padding: EdgeInsets.only(left: 4),
-                            child: Text(
-                              "0 days",
-                              style: TextStyle( 
+                      else
+                        const Padding(
+                          padding: EdgeInsets.only(left: 4),
+                          child: Text(
+                            "0 days",
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                               color: _muted,
-                              ),
                             ),
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        },
-      );
-    }
+          ),
+        );
+      },
+    );
   }
+}
 
 class Stat extends StatelessWidget {
   const Stat(this.value, this.unit, this.label, {super.key});
